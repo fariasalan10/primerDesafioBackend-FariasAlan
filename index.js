@@ -50,5 +50,5 @@ console.log(pm.getProducts());
 const productoBuscado = pm.getProductsById(2);
 const productoBuscado2 = pm.getProductsById(4);
 
-console.log("El producto buscado es el siguiente:", productoBuscado);
-console.log("El producto buscado es el siguiente:", productoBuscado2);
+console.log("El producto buscado es el siguiente: ", productoBuscado);
+console.log("El producto buscado es el siguiente: ", productoBuscado2);
