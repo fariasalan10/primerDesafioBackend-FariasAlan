@@ -33,6 +33,7 @@ class ProductManager {
     }
   }
   getProducts() {
+    console.log(this.products);
     return this.products;
   }
 
@@ -63,46 +64,71 @@ class ProductManager {
 
   async guardarArchivo(arrayProductos) {
     try {
-      await fs.writeFile(this.path, JSON.stringify(arrayProductos, null, 2));
+      const data = JSON.stringify(arrayProductos, null, 2);
+      await fs.writeFile(this.path, data + "\n"); // Agregar un salto de línea al final
     } catch (error) {
       console.log("Error al guardar el archivo", error);
     }
   }
 
-  async updateProduct(id, productoActualizado) {
+  async updateProduct(id, updatedProperties) {
     try {
       const arrayProductos = await this.leerArchivo();
       const index = arrayProductos.findIndex((product) => product.id === id);
+
       if (index !== -1) {
-        arrayProductos.splice(index, 1, productoActualizado);
+        const existingProduct = arrayProductos[index];
+
+        // Validar y actualizar propiedades
+        for (const key in updatedProperties) {
+          if (
+            updatedProperties.hasOwnProperty(key) &&
+            existingProduct.hasOwnProperty(key)
+          ) {
+            existingProduct[key] = updatedProperties[key];
+          }
+        }
+
         await this.guardarArchivo(arrayProductos);
+        console.log("Producto actualizado correctamente");
       } else {
-        console.log("Not found");
+        console.log(`No se encontró ningún producto con el ID ${id}`);
       }
     } catch (error) {
       console.log("Error al actualizar el producto", error);
     }
   }
 
-  async deleteProduct(id) {
-    try {
-      const arrayProductos = await this.leerArchivo();
-      const index = arrayProductos.findIndex((product) => product.id === id);
-      if (index !== -1) {
-        arrayProductos.splice(index, 1);
-      } else {
-        console.log("Not found");
-      }
-    } catch (error) {
-      console.log("Error al borrar el producto", error);
-    }
-  }
+  // async deleteProduct(id) {
+  //   try {
+  //     const arrayProductos = await this.leerArchivo();
+  //     const index = arrayProductos.findIndex((product) => product.id === id);
+
+  //     if (index !== -1) {
+  //       arrayProductos.splice(index, 1);
+  //       await this.guardarArchivo(arrayProductos);
+  //       console.log("Producto eliminado correctamente");
+  //     } else {
+  //       console.log(`No se encontró ningún producto con el ID ${id}`);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error al borrar el producto", error);
+  //   }
+  // }
 }
 
-const pm = new ProductManager("./products.json");
+const pm = new ProductManager("./src/products.json");
 
 pm.addProduct("Product 1", "Description 1", 10, "image 1", "abc123", 5);
 pm.addProduct("Product 2", "Description 2", 20, "image 2", "abc124", 10);
+pm.addProduct("Product 3", "Description 3", 30, "image 3", "abc125", 15);
+pm.addProduct("Product 4", "Description 4", 40, "image 4", "abc126", 20);
+pm.addProduct("Product 5", "Description 5", 50, "image 5", "abc127", 25);
+pm.addProduct("Product 6", "Description 6", 60, "image 6", "abc128", 30);
+pm.addProduct("Product 7", "Description 7", 70, "image 7", "abc129", 35);
+pm.addProduct("Product 8", "Description 8", 80, "image 8", "abc130", 40);
+pm.addProduct("Product 9", "Description 9", 90, "image 9", "abc131", 45);
+pm.addProduct("Product 10", "Description 10", 100, "image 10", "abc132", 50);
 
 console.log(pm.getProducts());
 
@@ -115,13 +141,10 @@ async function gerProductsById() {
 gerProductsById();
 
 const newProduct = {
-  id: 2,
   title: "Product 2 updated",
   description: "Description 2 updated",
-  price: 30,
   thumbnail: "image 2 updated",
   code: "abc124 updated",
-  stock: 15,
 };
 
 async function updateProduct() {
@@ -130,8 +153,11 @@ async function updateProduct() {
 }
 updateProduct();
 
-async function deleteProduct() {
-  await pm.deleteProduct(2);
-  console.log("Producto eliminado");
-}
-deleteProduct();
+// async function deleteProductById(id) {
+//   await pm.deleteProduct(id);
+//   console.log("Producto con ID", id, "eliminado correctamente");
+// }
+
+// deleteProductById(1);
+
+module.exports = ProductManager;
