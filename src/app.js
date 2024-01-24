@@ -24,7 +24,7 @@ server.get("/products/:pid", async (req, res) => {
     let product = products.find((product) => product.id == req.params.pid);
     res.send(product);
   } else {
-    return console.log("Product not found");
+    return res.send({ error: "Product not found" });
   }
 });
 
