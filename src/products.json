@@ -1,92 +1,11 @@
 [
   {
     "id": 1,
-    "title": "Product 1",
-    "description": "Description 1",
-    "price": 10,
-    "thumbnail": "image 1",
-    "code": "abc123",
-    "stock": 5
-  },
-  {
-    "id": 2,
-    "title": "Product 2 updated",
-    "description": "Description 2 updated",
-    "price": 20,
-    "thumbnail": "image 2 updated",
-    "code": "abc124 updated",
-    "stock": 10
-  },
-  {
-    "id": 3,
-    "title": "Product 3",
-    "description": "Description 3",
-    "price": 30,
-    "thumbnail": "image 3",
-    "code": "abc125",
-    "stock": 15
-  },
-  {
-    "id": 4,
-    "title": "Product 4",
-    "description": "Description 4",
-    "price": 40,
-    "thumbnail": "image 4",
-    "code": "abc126",
-    "stock": 20
-  },
-  {
-    "id": 5,
-    "title": "Product 5",
-    "description": "Description 5",
-    "price": 50,
-    "thumbnail": "image 5",
-    "code": "abc127",
-    "stock": 25
-  },
-  {
-    "id": 6,
-    "title": "Product 6",
-    "description": "Description 6",
-    "price": 60,
-    "thumbnail": "image 6",
-    "code": "abc128",
-    "stock": 30
-  },
-  {
-    "id": 7,
-    "title": "Product 7",
-    "description": "Description 7",
-    "price": 70,
-    "thumbnail": "image 7",
-    "code": "abc129",
-    "stock": 35
-  },
-  {
-    "id": 8,
-    "title": "Product 8",
-    "description": "Description 8",
-    "price": 80,
-    "thumbnail": "image 8",
-    "code": "abc130",
-    "stock": 40
-  },
-  {
-    "id": 9,
-    "title": "Product 9",
-    "description": "Description 9",
-    "price": 90,
-    "thumbnail": "image 9",
-    "code": "abc131",
-    "stock": 45
-  },
-  {
-    "id": 10,
-    "title": "Product 10",
-    "description": "Description 10",
-    "price": 100,
-    "thumbnail": "image 10",
-    "code": "abc132",
-    "stock": 50
+    "title": "Second",
+    "description": "Second",
+    "price": 200,
+    "thumbnail": "Second new",
+    "code": "Second2",
+    "stock": 1000
   }
 ]

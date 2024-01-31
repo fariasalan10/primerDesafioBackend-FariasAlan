@@ -32,9 +32,13 @@ class ProductManager {
       await this.guardarArchivo(this.products);
     }
   }
-  getProducts() {
-    console.log(this.products);
-    return this.products;
+  async getProducts() {
+    try {
+      const arrayProductos = this.leerArchivo();
+      return arrayProductos;
+    } catch (error) {
+      console.log("Error al leer el archivo", error);
+    }
   }
 
   async getProductsById(id) {
@@ -99,59 +103,59 @@ class ProductManager {
     }
   }
 
-  // async deleteProduct(id) {
-  //   try {
-  //     const arrayProductos = await this.leerArchivo();
-  //     const index = arrayProductos.findIndex((product) => product.id === id);
+  async deleteProduct(id) {
+    try {
+      const arrayProductos = await this.leerArchivo();
+      const index = arrayProductos.findIndex((product) => product.id === id);
 
-  //     if (index !== -1) {
-  //       arrayProductos.splice(index, 1);
-  //       await this.guardarArchivo(arrayProductos);
-  //       console.log("Producto eliminado correctamente");
-  //     } else {
-  //       console.log(`No se encontró ningún producto con el ID ${id}`);
-  //     }
-  //   } catch (error) {
-  //     console.log("Error al borrar el producto", error);
-  //   }
-  // }
+      if (index !== -1) {
+        arrayProductos.splice(index, 1);
+        await this.guardarArchivo(arrayProductos);
+        console.log("Producto eliminado correctamente");
+      } else {
+        console.log(`No se encontró ningún producto con el ID ${id}`);
+      }
+    } catch (error) {
+      console.log("Error al borrar el producto", error);
+    }
+  }
 }
 
-const pm = new ProductManager("./src/products.json");
+// const pm = new ProductManager("./src/products.json");
 
-pm.addProduct("Product 1", "Description 1", 10, "image 1", "abc123", 5);
-pm.addProduct("Product 2", "Description 2", 20, "image 2", "abc124", 10);
-pm.addProduct("Product 3", "Description 3", 30, "image 3", "abc125", 15);
-pm.addProduct("Product 4", "Description 4", 40, "image 4", "abc126", 20);
-pm.addProduct("Product 5", "Description 5", 50, "image 5", "abc127", 25);
-pm.addProduct("Product 6", "Description 6", 60, "image 6", "abc128", 30);
-pm.addProduct("Product 7", "Description 7", 70, "image 7", "abc129", 35);
-pm.addProduct("Product 8", "Description 8", 80, "image 8", "abc130", 40);
-pm.addProduct("Product 9", "Description 9", 90, "image 9", "abc131", 45);
-pm.addProduct("Product 10", "Description 10", 100, "image 10", "abc132", 50);
+// pm.addProduct("Product 1", "Description 1", 10, "image 1", "abc123", 5);
+// pm.addProduct("Product 2", "Description 2", 20, "image 2", "abc124", 10);
+// pm.addProduct("Product 3", "Description 3", 30, "image 3", "abc125", 15);
+// pm.addProduct("Product 4", "Description 4", 40, "image 4", "abc126", 20);
+// pm.addProduct("Product 5", "Description 5", 50, "image 5", "abc127", 25);
+// pm.addProduct("Product 6", "Description 6", 60, "image 6", "abc128", 30);
+// pm.addProduct("Product 7", "Description 7", 70, "image 7", "abc129", 35);
+// pm.addProduct("Product 8", "Description 8", 80, "image 8", "abc130", 40);
+// pm.addProduct("Product 9", "Description 9", 90, "image 9", "abc131", 45);
+// pm.addProduct("Product 10", "Description 10", 100, "image 10", "abc132", 50);
 
-console.log(pm.getProducts());
+// async function getProductsById() {
+//   const productoBuscado = await pm.getProductsById(2);
+//   const productoBuscado2 = await pm.getProductsById(4);
+//   console.log("El producto buscado es el siguiente: ", productoBuscado);
+//   console.log("El 2do producto buscado  es el siguiente: ", productoBuscado2);
+// }
+// getProductsById();
 
-async function gerProductsById() {
-  const productoBuscado = await pm.getProductsById(2);
-  const productoBuscado2 = await pm.getProductsById(4);
-  console.log("El producto buscado es el siguiente: ", productoBuscado);
-  console.log("El 2do producto buscado  es el siguiente: ", productoBuscado2);
-}
-gerProductsById();
+// const newProduct = {
+//   title: "Product 2 updated",
+//   description: "Description 2 updated",
+//   thumbnail: "image 2 updated",
+//   code: "abc124 updated",
+// };
 
-const newProduct = {
-  title: "Product 2 updated",
-  description: "Description 2 updated",
-  thumbnail: "image 2 updated",
-  code: "abc124 updated",
-};
+// async function updateProduct() {
+//   await pm.updateProduct(2, newProduct);
+//   console.log("El producto actualizado es el siguiente: ", newProduct);
+// }
+// updateProduct();
 
-async function updateProduct() {
-  await pm.updateProduct(2, newProduct);
-  console.log("El producto actualizado es el siguiente: ", newProduct);
-}
-updateProduct();
+// pm.getProducts();
 
 // async function deleteProductById(id) {
 //   await pm.deleteProduct(id);

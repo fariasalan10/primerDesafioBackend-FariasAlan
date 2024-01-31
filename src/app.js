@@ -1,33 +1,15 @@
 const express = require("express");
 const server = express();
-const ProductManager = require("./index.js");
+const puerto = 8080;
+const productsRouter = require("./routes/products.router");
+const cartsRouter = require("./routes/carts.router");
+
 server.use(express.urlencoded({ extended: true }));
+server.use(express.json());
 
-server.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-const pm = new ProductManager("./src/products.json");
+server.use("/api/products", productsRouter);
+server.use("/api/carts", cartsRouter);
 
-server.get("/products", async (req, res) => {
-  let products = await pm.leerArchivo();
-
-  if (req.query.limit) {
-    products = products.slice(0, req.query.limit);
-  }
-
-  res.send(products);
-});
-
-server.get("/products/:pid", async (req, res) => {
-  let products = await pm.leerArchivo();
-  if (req.params.pid <= products.length) {
-    let product = products.find((product) => product.id == req.params.pid);
-    res.send(product);
-  } else {
-    return res.send({ error: "Product not found" });
-  }
-});
-
-server.listen(8080, () => {
-  console.log("Server listening on port 8080");
+server.listen(puerto, () => {
+  console.log(`Server listening on port ${puerto}`);
 });
