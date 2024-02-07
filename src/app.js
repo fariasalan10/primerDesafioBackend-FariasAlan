@@ -1,9 +1,18 @@
 const express = require("express");
-const server = express();
-const puerto = 8080;
+const handlebars = require("express-handlebars");
+const { Server } = require("socket.io");
+
 const productsRouter = require("./routes/products.router");
 const cartsRouter = require("./routes/carts.router");
 
+const server = express();
+const puerto = 8080;
+
+server.engine("handlebars", handlebars.engine());
+server.set("views", "./views");
+server.set("view engine", "handlebars");
+
+server.use(express.static("./public"));
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 
