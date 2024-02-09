@@ -1,0 +1,41 @@
+<h1>Real Time</h1>
+
+<div id="divProducts">
+  {{#each products}}
+    <h2>{{this.title}}</h2>
+    <p>Id: {{this.id}}</p>
+    <p>Description: {{this.description}}</p>
+    <p>Price: ${{this.price}}</p>
+    <p>Img: {{this.thumbnail}}</p>
+    <p>Code: {{this.code}}</p>
+    <p>Stock: {{this.stock}}</p>
+    <button onclick="deleteProduct({{this.id}})">Delete</button>
+  {{/each}}
+</div>
+
+<h2>Form</h2>
+<div id="itemProduct">
+
+  <input type="text" id="title" placeholder="title" />
+  <br />
+
+  <input type="text" id="description" placeholder="description" />
+  <br />
+
+  <input type="number" id="price" placeholder="price" />
+  <br />
+
+  <input type="text" id="thumbnail" placeholder="thumbnail" />
+  <br />
+
+  <input type="text" id="code" placeholder="code" />
+  <br />
+
+  <input type="number" id="stock" placeholder="stock" />
+  <br />
+
+  <button id="addProduct">Add</button>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realtime.js"></script>
