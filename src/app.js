@@ -38,7 +38,8 @@ io.on("connection", (socket) => {
   console.log("User connected");
 
   socket.on("new product", async (newProduct) => {
-    await pm.addProduct(newProduct);
+    let { title, description, price, thumbnail, code, stock } = newProduct;
+    await pm.addProduct(title, description, price, thumbnail, code, stock);
     const products = await pm.getProducts();
     io.emit("list updated", { products });
   });

@@ -34,14 +34,14 @@ socket.on("list updated", ({ products }) => {
     <h2>${product.title}</h2>
     <p>Id: ${product.id}</p>
     <p>Description: ${product.description}</p>
-    <p>Price: ${product.price}</p>
+    <p>Price: $${product.price}</p>
     <p>Img: ${product.thumbnail}</p>
     <p>Code: ${product.code}</p>
     <p>Stock: ${product.stock}</p>
-    <button onclick="deleteProduct(${this.id})">Delete</button>`;
+    <button onclick="deleteProduct(${product.id})">Delete</button>`;
   });
 });
 
 function deleteProduct(id) {
-  socket.emit("delete product", { id });
+  socket.emit("delete product", id);
 }

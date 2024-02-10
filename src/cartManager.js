@@ -44,12 +44,5 @@ class CartManager {
     newCart[col_index] = newCart;
     await fs.writeFile(this.path, JSON.stringify(carts, null, "\t")); //escribimos el archivo
   }
-
-  async getNextId() {
-    const content = await fs.readFile(this.path, "utf-8");
-    const carts = JSON.parse(content);
-    const lastCart = carts[carts.length - 1];
-    return lastCart ? lastCart.id + 1 : 1;
-  }
 }
 module.exports = CartManager;
