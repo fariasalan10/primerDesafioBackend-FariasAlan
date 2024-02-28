@@ -3,13 +3,13 @@
 <div id="divProducts">
   {{#each products}}
     <h2>{{this.title}}</h2>
-    <p>Id: {{this.id}}</p>
+    <p>Id: {{this._id}}</p>
     <p>Description: {{this.description}}</p>
     <p>Price: ${{this.price}}</p>
     <p>Img: {{this.thumbnail}}</p>
     <p>Code: {{this.code}}</p>
     <p>Stock: {{this.stock}}</p>
-    <button onclick="deleteProduct({{this.id}})">Delete</button>
+    <button onclick="deleteProduct('{{this._id}}')">Delete</button>
   {{/each}}
 </div>
 

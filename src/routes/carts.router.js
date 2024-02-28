@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
-const ProductManager = require("../productManager");
-const CartManager = require("../cartManager");
+const ProductManager = require("../dao/dbManagers/productManager");
+const CartManager = require("../dao/dbManagers/cartManager");
 const pm = new ProductManager("./src/files/products.json");
 const cm = new CartManager("./src/files/carts.json");
 

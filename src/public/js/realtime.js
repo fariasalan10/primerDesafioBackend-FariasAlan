@@ -32,13 +32,13 @@ socket.on("list updated", ({ products }) => {
   products.forEach((product) => {
     idDivProducts.innerHTML += `
     <h2>${product.title}</h2>
-    <p>Id: ${product.id}</p>
+    <p>Id: ${product._id}</p>
     <p>Description: ${product.description}</p>
     <p>Price: $${product.price}</p>
     <p>Img: ${product.thumbnail}</p>
     <p>Code: ${product.code}</p>
     <p>Stock: ${product.stock}</p>
-    <button onclick="deleteProduct(${product.id})">Delete</button>`;
+    <button onclick="deleteProduct('${product._id}')">Delete</button>`;
   });
 });
 

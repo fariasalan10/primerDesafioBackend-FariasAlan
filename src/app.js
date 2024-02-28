@@ -1,8 +1,9 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
 const { Server } = require("socket.io");
+const mongoose = require("mongoose");
 
-const ProductManager = require("./productManager");
+const ProductManager = require("./dao/dbManagers/productManager");
 const pm = new ProductManager("./src/files/products.json");
 
 const productsRouter = require("./routes/products.router");
@@ -11,6 +12,16 @@ const viewsRouter = require("./routes/views.router");
 
 const server = express();
 const puerto = 8080;
+
+const messageModel = require("./dao/models/messages");
+//Mongoose
+mongoose
+  .connect(
+    "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce"
+  )
+  .then(() => {
+    console.log("Base de datos conectada");
+  });
 
 //Handlebars
 server.engine("handlebars", handlebars.engine());
@@ -34,7 +45,7 @@ const serverHttp = server.listen(puerto, () => {
 //Socket
 const io = new Server(serverHttp);
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   console.log("User connected");
 
   socket.on("new product", async (newProduct) => {
@@ -48,5 +59,14 @@ io.on("connection", (socket) => {
     await pm.deleteProduct(id);
     const products = await pm.getProducts();
     io.emit("list updated", { products });
+  });
+
+  const data = await messageModel.find().lean();
+  socket.emit("chat messages", { data });
+
+  socket.on("new message", async (messageInfo) => {
+    await messageModel.create(messageInfo);
+    const data = await messageModel.find().lean();
+    io.emit("chat messages", { data });
   });
 });
