@@ -5,14 +5,30 @@ const pm = new ProductManager("./src/files/products.json");
 
 router.get("/", async (req, res) => {
   try {
-    let products = await pm.getProducts();
+    const { limit = 10, page = 1, sort, query } = req.query;
+    const products = await pm.getProducts({
+      limit: parseInt(limit),
+      page: parseInt(page),
+      sort,
+      query,
+    });
 
-    const { limit } = req.query;
-    if (limit) {
-      products = products.slice(0, limit);
-    }
-
-    res.status(200).json({ products });
+    res.status(200).json({
+      status: "success",
+      payload: products,
+      totalPages: products.totalPages,
+      prevPage: products.prevPage,
+      nextPage: products.nextPage,
+      page: products.page,
+      hasPrevPage: products.hasPrevPage,
+      hasNextPage: products.hasNextPage,
+      prevLink: products.hasPrevPage
+        ? `http://localhost:8080/api/products?limit=${limit}&page=${products.prevPage}&sort=${sort}&query=${query}`
+        : null,
+      nextLink: products.hasNextPage
+        ? `http://localhost:8080/api/products?limit=${limit}&page=${products.nextPage}&sort=${sort}&query=${query}`
+        : null,
+    });
   } catch (error) {
     console.error("Error al obtener productos:", error);
     res.status(500).json({ error: "Internal Server Error" });

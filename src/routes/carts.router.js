@@ -49,4 +49,52 @@ router.post("/:id/product/:pid", async (req, res) => {
   }
 });
 
+router.delete("/:id/product/:pid", async (req, res) => {
+  try {
+    const updatedCart = await cm.deleteProduct(req.params.id, req.params.pid);
+    res
+      .status(200)
+      .json({ status: "success", message: "Product deleted", updatedCart });
+  } catch (error) {
+    console.error("Error al eliminar producto del carrito:", error);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedCart = await cm.updateCart(req.params.id, req.body);
+    res
+      .status(200)
+      .json({ status: "success", message: "Cart updated", updatedCart });
+  } catch (error) {
+    console.error("Error al actualizar carrito:", error);
+  }
+});
+
+router.put("/:id/product/:pid", async (req, res) => {
+  try {
+    const updatedCart = await cm.updateQuantityProducts(
+      req.params.id,
+      req.params.pid,
+      req.body.quantity
+    );
+    res
+      .status(200)
+      .json({ status: "success", message: "Quantity updated", updatedCart });
+  } catch (error) {
+    console.error("Error al actualizar cantidad del carrito:", error);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const updatedCart = await cm.cleanCart(req.params.id);
+    res
+      .status(200)
+      .json({ status: "success", message: "Cart cleaned", updatedCart });
+  } catch (error) {
+    console.error("Error al limpiar carrito:", error);
+  }
+});
+
 module.exports = router;

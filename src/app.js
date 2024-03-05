@@ -14,6 +14,7 @@ const server = express();
 const puerto = 8080;
 
 const messageModel = require("./dao/models/messages");
+
 //Mongoose
 mongoose
   .connect(
