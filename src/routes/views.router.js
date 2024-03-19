@@ -5,9 +5,25 @@ const CartManager = require("../dao/dbManagers/cartManager");
 const pm = new ProductManager("./src/files/products.json");
 const cm = new CartManager("./src/files/carts.json");
 
-router.get("/", async (req, res) => {
+const publicAcces = (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect("/");
+  } else {
+    next();
+  }
+};
+
+const privateAcces = (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  } else {
+    next();
+  }
+};
+
+router.get("/", privateAcces, async (req, res) => {
   const products = await pm.getProducts();
-  res.render("home", { products });
+  res.render("products", { products, user: req.session.user });
 });
 
 router.get("/realtimeproducts", async (req, res) => {
@@ -45,7 +61,7 @@ router.get("/products", async (req, res) => {
   }
 });
 
-router.get("/products/:id", async (req, res) => {
+router.get("/carts/:id", async (req, res) => {
   try {
     const cart = await cm.getCart(req.params.id);
     if (cart) {
@@ -61,6 +77,14 @@ router.get("/products/:id", async (req, res) => {
     console.log("Error al obtener el carrito:", error);
     res.status(500).send("Carrito no encontrado");
   }
+});
+
+router.get("/register", publicAcces, (req, res) => {
+  res.render("register", {});
+});
+
+router.get("/login", publicAcces, (req, res) => {
+  res.render("login", {});
 });
 
 module.exports = router;

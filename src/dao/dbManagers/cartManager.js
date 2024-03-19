@@ -7,14 +7,17 @@ class CartManager {
   }
 
   async getCart(id) {
-    const cart = await cartModel.findOne({ _id: id });
-    return cart;
+    const cart = await cartModel.find({ _id: id }).populate("items.item").lean;
+    if (!cart || cart.length == 0) {
+      throw new Error("cart no existe");
+    }
+    return cart[0];
   }
 
   async addProduct(id, itemId) {
     const cart = await this.getCart(id);
 
-    const index = cart.items.findIndex((i) => i.item == itemId);
+    const index = cart.items.findIndex((i) => i.item._id == itemId);
     if (index >= 0) {
       cart.items[index].quantity += 1;
     } else {
@@ -29,9 +32,9 @@ class CartManager {
     if (!cart) {
       return;
     } else {
-      cart.items = cart.items.filter((i) => i.item._id.toString() != itemId);
+      cart.items = cart.items.filter((i) => i.item._id != itemId);
       await cartModel.updateOne({ _id: id }, cart);
-      return cart;
+      return this.getCart;
     }
   }
 
@@ -42,7 +45,7 @@ class CartManager {
     } else {
       cart.items = updatedProducts;
       await cartModel.updateOne({ _id: id }, cart);
-      return cart;
+      return this.getCart(cartId);
     }
   }
 

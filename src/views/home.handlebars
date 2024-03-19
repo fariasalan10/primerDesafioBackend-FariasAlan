@@ -1,11 +1,11 @@
 <h1>Home</h1>
 
 {{#each products}}
-  <h2>{{title}}</h2>
-  <p>Id: {{id}}</p>
-  <p>Description: {{description}}</p>
-  <p>Price: ${{price}}</p>
-  <p>Img: {{thumbnail}}</p>
-  <p>Code: {{code}}</p>
-  <p>Stock: {{stock}}</p>
+  <h2>{{products.title}}</h2>
+  <p>Id: {{products.id}}</p>
+  <p>Description: {{products.description}}</p>
+  <p>Price: ${{products.price}}</p>
+  <p>Img: {{products.thumbnail}}</p>
+  <p>Code: {{products.code}}</p>
+  <p>Stock: {{products.stock}}</p>
 {{/each}}

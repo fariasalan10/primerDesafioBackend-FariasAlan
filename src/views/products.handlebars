@@ -1,10 +1,18 @@
-<h1> Productos </h1>
-{{#each productos}}
+<h1> Bienvenido, {{user.name}} </h1>
+<p>Te logueaste como:
+  {{user.email}}
+  <a href="/api/sessions/logout"><button>Logout</button></a>
+</p>
+<p>Tu edad es de {{user.age}} años</p>
+<p>Tu rol es: {{user.role}}</p>
+
+<h2> Productos </h2>
+{{#each products}}
   <div>
-    <h2>{{title}}</h2>
-    <p>{{description}}</p>
-    <p>Price: ${{price}}</p>
-    <p>Category: {{category}} </p>
+    <h2>{{products.title}}</h2>
+    <p>{{products.description}}</p>
+    <p>Price: ${{products.price}}</p>
+    <p>Category: {{products.category}} </p>
     <button> Agregar al Carrito </button>
   </div>
 {{/each}}

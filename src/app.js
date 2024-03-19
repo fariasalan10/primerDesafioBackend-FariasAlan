@@ -2,6 +2,8 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const { Server } = require("socket.io");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 const ProductManager = require("./dao/dbManagers/productManager");
 const pm = new ProductManager("./src/files/products.json");
@@ -9,6 +11,7 @@ const pm = new ProductManager("./src/files/products.json");
 const productsRouter = require("./routes/products.router");
 const cartsRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
+const sessionRouter = require("./routes/sessions.router");
 
 const server = express();
 const puerto = 8080;
@@ -34,10 +37,25 @@ server.use(express.static(`${__dirname}/public`));
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 
+//Middlewares
+server.use(
+  session({
+    store: MongoStore.create({
+      mongoUrl:
+        "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce",
+      ttl: 600,
+    }),
+    secret: "coderhouse",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 //Routers
 server.use("/api/products", productsRouter);
 server.use("/api/carts", cartsRouter);
 server.use("/", viewsRouter);
+server.use("/api/sessions", sessionRouter);
 
 const serverHttp = server.listen(puerto, () => {
   console.log(`Server listening on port ${puerto}`);
