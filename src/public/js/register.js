@@ -14,6 +14,14 @@ registerForm.addEventListener("submit", (event) => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log("Data", data);
+      if (data.message == "User already exists") {
+        alert("¡Ups! Ese usuario ya existe.");
+        return;
+      } else {
+        alert("¡Tu usuario fue creado correctamente!");
+        window.location.replace("/login");
+        console.log(data);
+        return;
+      }
     });
 });

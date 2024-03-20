@@ -11,35 +11,44 @@ sessionRouter.post("/register", async (req, res) => {
       message: "Missing required information",
     });
   }
-  const result = await userModel.create({
-    first_name,
-    last_name,
-    email,
-    age,
-    password,
-  });
-  res.send({
-    status: "success",
-    message: "User created successfully",
-    result,
-  });
+
+  try {
+    const result = await userModel.create({
+      first_name,
+      last_name,
+      email,
+      age,
+      password,
+    });
+    res.send({
+      status: "success",
+      message: "User created successfully",
+      result,
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).send({
+        status: "error",
+        message: "User already exists",
+      });
+    }
+    console.log("Error creating user", error);
+    res.status(500).send("Error creating user");
+  }
 });
 
 sessionRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).send({
-      status: "error",
-      message: "Missing required information",
-    });
+    return res.status(400).send({ status: "error", error: "Missing data" });
   }
   const result = await userModel.findOne({ email, password });
 
   if (!result) {
     return res.status(400).send({
       status: "error",
-      message: "Wrong email or password",
+      error: "Wrong email or password",
     });
   }
   let role = "usuario";
