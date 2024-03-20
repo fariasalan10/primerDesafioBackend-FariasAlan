@@ -4,6 +4,8 @@ const { Server } = require("socket.io");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
+const passport = require("passport");
+const initializePassport = require("./config/passport.config");
 
 const ProductManager = require("./dao/dbManagers/productManager");
 const pm = new ProductManager("./src/files/products.json");
@@ -89,3 +91,8 @@ io.on("connection", async (socket) => {
     io.emit("chat messages", { data });
   });
 });
+
+//Passport
+initializePassport();
+server.use(passport.initialize());
+server.use(passport.session());
