@@ -95,4 +95,24 @@ sessionRouter.post("/resetPassword", async (req, res) => {
   });
 });
 
+sessionRouter.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+  async (req, res) => {}
+);
+
+sessionRouter.get(
+  "/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/failLogin" }),
+  async (req, res) => {
+    req.session.user = {
+      name: req.user.first_name,
+      email: req.user.email,
+      age: req.user.age,
+      role: "usuario",
+    };
+    res.redirect("/");
+  }
+);
+
 module.exports = sessionRouter;
