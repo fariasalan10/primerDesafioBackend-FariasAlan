@@ -31,7 +31,7 @@ sessionRouter.post(
   async (req, res) => {
     const user = req.user;
     let role = "usuario";
-    if (user.email === "adminCoder@coder.com") {
+    if (user.email === "adminCoder@coder.com" && user.password === "admin123") {
       role = "admin";
     }
 

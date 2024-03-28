@@ -53,6 +53,11 @@ server.use(
   })
 );
 
+//Passport
+initializePassport();
+server.use(passport.initialize());
+server.use(passport.session());
+
 //Routers
 server.use("/api/products", productsRouter);
 server.use("/api/carts", cartsRouter);
@@ -91,8 +96,3 @@ io.on("connection", async (socket) => {
     io.emit("chat messages", { data });
   });
 });
-
-//Passport
-initializePassport();
-server.use(passport.initialize());
-server.use(passport.session());

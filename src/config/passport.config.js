@@ -44,6 +44,8 @@ const initializePassport = () => {
       {
         passReqToCallback: true,
         usernameField: "email",
+        passwordField: "password",
+        session: false,
       },
       async (req, username, password, done) => {
         const { first_name, last_name, email, age } = req.body;
@@ -76,6 +78,7 @@ const initializePassport = () => {
     new LocalStrategy(
       {
         usernameField: "email",
+        session: false,
       },
       async (email, password, done) => {
         try {
