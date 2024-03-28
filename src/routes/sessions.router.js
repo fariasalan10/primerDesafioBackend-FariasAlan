@@ -6,7 +6,10 @@ const { createHash } = require("../utils");
 
 sessionRouter.post(
   "/register",
-  passport.authenticate("register", { failureRedirect: "/failRegister" }),
+  passport.authenticate("register", {
+    session: false,
+    failureRedirect: "api/sessions/failRegister",
+  }),
   async (req, res) => {
     res.send({
       status: "success",
@@ -40,6 +43,8 @@ sessionRouter.post(
       email: user.email,
       age: user.age,
       role: role,
+      id: user._id,
+      cart: user.cart,
     };
 
     res.send({
@@ -114,5 +119,19 @@ sessionRouter.get(
     res.redirect("/");
   }
 );
+
+sessionRouter.get("/current", (req, res) => {
+  if (req.session.user) {
+    res.send({
+      status: "success",
+      user: req.session.user,
+    });
+  } else {
+    res.send({
+      status: "error",
+      message: "User not found",
+    });
+  }
+});
 
 module.exports = sessionRouter;

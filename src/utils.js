@@ -6,7 +6,7 @@ const createHash = (password) => {
 };
 
 const isValidPassword = (user, password) => {
-  const isValid = bcrypt.comparneSyc(password, user.password);
+  const isValid = bcrypt.compareSync(password, user.password);
   return isValid;
 };
 

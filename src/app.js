@@ -6,6 +6,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config");
+const cookieParser = require("cookie-parser");
 
 const ProductManager = require("./dao/dbManagers/productManager");
 const pm = new ProductManager("./src/files/products.json");
@@ -40,6 +41,7 @@ server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 
 //Middlewares
+
 server.use(
   session({
     store: MongoStore.create({
