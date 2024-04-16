@@ -1,9 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const ProductManager = require("../dao/dbManagers/productManager");
-const CartManager = require("../dao/dbManagers/cartManager");
-const pm = new ProductManager("./src/files/products.json");
-const cm = new CartManager("./src/files/carts.json");
+const ViewsController = require("../controllers/views.controller");
 
 const publicAcces = (req, res, next) => {
   if (req.session.user) {
@@ -21,74 +18,20 @@ const privateAcces = (req, res, next) => {
   }
 };
 
-router.get("/", privateAcces, async (req, res) => {
-  const products = await pm.getProducts();
-  res.render("products", { products, user: req.session.user });
-});
+router.get("/", privateAcces, ViewsController.getHome);
 
-router.get("/realtimeproducts", async (req, res) => {
-  const products = await pm.getProducts();
-  res.render("realTimeProducts", { products });
-});
+router.get("/realtimeproducts", ViewsController.getRealTimeProducts);
 
-router.get("/chat", (req, res) => {
-  res.render("chat", {});
-});
+router.get("/chat", ViewsController.getChat);
 
-router.get("/products", async (req, res) => {
-  try {
-    const { page = 1, limit = 2 } = req.query;
-    const products = await pm.getProducts({
-      page: parseInt(page),
-      limit: parseInt(limit),
-    });
-    const newArray = products.docs.map((product) => {
-      const { _id, ...rest } = product.toObject();
-      return rest;
-    });
-    res.render("products", {
-      products: newArray,
-      hasPrevPage: products.hasPrevPage,
-      hasNextPage: products.hasNextPage,
-      prevPage: products.prevPage,
-      nextPage: products.nextPage,
-      currentPage: products.page,
-      totalPages: products.totalPages,
-    });
-  } catch (error) {
-    console.log("Error al obtener los productos:", error);
-    res.status(500).send("Error al obtener los productos");
-  }
-});
+router.get("/products", ViewsController.getProducts);
 
-router.get("/carts/:id", async (req, res) => {
-  try {
-    const cart = await cm.getCart(req.params.id);
-    if (cart) {
-      const productsInCart = cart.products.map((item) => ({
-        product: item.product.toObject(),
-        quantity: item.quantity,
-      }));
-      res.render("cart", { products: productsInCart });
-    }
-    res.status(404).send("Carrito no encontrado");
-    console.log("Error al obtener el carrito:", error);
-  } catch (error) {
-    console.log("Error al obtener el carrito:", error);
-    res.status(500).send("Carrito no encontrado");
-  }
-});
+router.get("/carts/:id", ViewsController.getCart);
 
-router.get("/register", publicAcces, (req, res) => {
-  res.render("register", {});
-});
+router.get("/register", publicAcces, ViewsController.getRegister);
 
-router.get("/login", publicAcces, (req, res) => {
-  res.render("login", {});
-});
+router.get("/login", publicAcces, ViewsController.getLogin);
 
-router.get("/resetPassword", (req, res) => {
-  res.render("resetPassword", {});
-});
+router.get("/resetPassword", publicAcces, ViewsController.getResetPassword);
 
 module.exports = router;

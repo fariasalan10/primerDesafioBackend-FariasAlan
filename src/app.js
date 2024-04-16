@@ -6,7 +6,6 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config");
-const cookieParser = require("cookie-parser");
 
 const ProductManager = require("./dao/dbManagers/productManager");
 const pm = new ProductManager("./src/files/products.json");
@@ -17,18 +16,15 @@ const viewsRouter = require("./routes/views.router");
 const sessionRouter = require("./routes/sessions.router");
 
 const server = express();
-const puerto = 8080;
+const puerto = port;
 
 const messageModel = require("./dao/models/messages");
+const { mongoConnectionLink, sessionSecret, port } = require("./config/config");
 
 //Mongoose
-mongoose
-  .connect(
-    "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce"
-  )
-  .then(() => {
-    console.log("Base de datos conectada");
-  });
+mongoose.connect(mongoConnectionLink).then(() => {
+  console.log("Base de datos conectada");
+});
 
 //Handlebars
 server.engine("handlebars", handlebars.engine());
@@ -45,11 +41,10 @@ server.use(express.json());
 server.use(
   session({
     store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce",
+      mongoUrl: mongoConnectionLink,
       ttl: 600,
     }),
-    secret: "coderhouse",
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
   })
