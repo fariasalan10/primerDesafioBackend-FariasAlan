@@ -1,42 +1,22 @@
-const ProductManager = require("../dao/dbManagers/productManager");
-const pm = new ProductManager("../files/products.json");
+const ProductsService = require("../services/products.service");
+
+const productService = new ProductsService();
 
 class ProductsController {
   static async getAll(req, res) {
+    let query = req.query;
     try {
-      const { limit = 10, page = 1, sort, query } = req.query;
-      const products = await pm.getProducts({
-        limit: parseInt(limit),
-        page: parseInt(page),
-        sort,
-        query,
-      });
-
-      res.status(200).json({
-        status: "success",
-        payload: products,
-        totalPages: products.totalPages,
-        prevPage: products.prevPage,
-        nextPage: products.nextPage,
-        page: products.page,
-        hasPrevPage: products.hasPrevPage,
-        hasNextPage: products.hasNextPage,
-        prevLink: products.hasPrevPage
-          ? `http://localhost:8080/api/products?limit=${limit}&page=${products.prevPage}&sort=${sort}&query=${query}`
-          : null,
-        nextLink: products.hasNextPage
-          ? `http://localhost:8080/api/products?limit=${limit}&page=${products.nextPage}&sort=${sort}&query=${query}`
-          : null,
-      });
+      let { docs, ...rest } = await productService.getAll(query);
+      res.send({ status: "success", payload: docs, ...rest });
     } catch (error) {
-      console.error("Error al obtener productos:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      console.log("Error al obtener los productos:", error);
+      res.status(500).send("Error al obtener los productos");
     }
   }
 
-  static async getProductById(req, res) {
+  static async getById(req, res) {
     try {
-      const product = await pm.getProductsById(req.params.pid);
+      const product = await productService.getById(req.params.pid);
       if (product) {
         res.status(200).json(product);
       } else {
@@ -50,14 +30,8 @@ class ProductsController {
 
   static async addProduct(req, res) {
     try {
-      await pm.addProduct(
-        req.body.title,
-        req.body.description,
-        req.body.price,
-        req.body.thumbnail,
-        req.body.code,
-        req.body.stock
-      );
+      await productService.create(req.body);
+      const product = await productService.getAll();
       res.status(201).json({ status: "success", message: "Product created" });
     } catch (error) {
       console.error("Error al crear producto:", error);
@@ -67,7 +41,7 @@ class ProductsController {
 
   static async updateProduct(req, res) {
     try {
-      await pm.updateProduct(req.params.pid, req.body);
+      await productService.update(req.params.pid, req.body);
       res.status(200).json({ status: "success", message: "Product updated" });
     } catch (error) {
       console.error("Error al actualizar producto:", error);
@@ -77,7 +51,7 @@ class ProductsController {
 
   static async deleteProduct(req, res) {
     try {
-      const deleted = await pm.deleteProduct(req.params.pid);
+      const deleted = await productService.delete(req.params.pid);
       if (deleted) {
         res.status(200).json({ status: "success", message: "Product deleted" });
       } else {

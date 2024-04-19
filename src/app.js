@@ -15,16 +15,20 @@ const cartsRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
 const sessionRouter = require("./routes/sessions.router");
 
-const server = express();
-const puerto = port;
-
 const messageModel = require("./dao/models/messages");
-const { mongoConnectionLink, sessionSecret, port } = require("./config/config");
+const { mongoConnectionLink, sessionSecret } = require("./config/config");
+const port = 8080;
+
+const server = express();
 
 //Mongoose
-mongoose.connect(mongoConnectionLink).then(() => {
-  console.log("Base de datos conectada");
-});
+mongoose
+  .connect(
+    "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce"
+  )
+  .then(() => {
+    console.log("Base de datos conectada");
+  });
 
 //Handlebars
 server.engine("handlebars", handlebars.engine());
@@ -41,10 +45,11 @@ server.use(express.json());
 server.use(
   session({
     store: MongoStore.create({
-      mongoUrl: mongoConnectionLink,
+      mongoUrl:
+        "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce",
       ttl: 600,
     }),
-    secret: sessionSecret,
+    secret: "coderhouse",
     resave: false,
     saveUninitialized: true,
   })
@@ -61,8 +66,8 @@ server.use("/api/carts", cartsRouter);
 server.use("/", viewsRouter);
 server.use("/api/sessions", sessionRouter);
 
-const serverHttp = server.listen(puerto, () => {
-  console.log(`Server listening on port ${puerto}`);
+const serverHttp = server.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
 });
 
 //Socket

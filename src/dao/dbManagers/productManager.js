@@ -13,8 +13,6 @@ class ProductManager {
     });
   }
   async getProducts({ limit = 10, page = 1, sort, query } = {}) {
-    // return products;
-
     const skip = (page - 1) * limit;
 
     let queryOptions = {};

@@ -2,9 +2,9 @@ const { Router } = require("express");
 const ProductsController = require("../controllers/products.controller");
 const router = Router();
 
-router.get("/", ProductsController.getProducts);
+router.get("/", ProductsController.getAll);
 
-router.get("/:pid", ProductsController.getProductById);
+router.get("/:pid", ProductsController.getById);
 
 router.post("/", ProductsController.addProduct);
 
