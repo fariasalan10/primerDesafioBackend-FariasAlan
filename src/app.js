@@ -1,7 +1,6 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
 const { Server } = require("socket.io");
-const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
@@ -20,15 +19,6 @@ const { mongoConnectionLink, sessionSecret } = require("./config/config");
 const port = 8080;
 
 const server = express();
-
-//Mongoose
-mongoose
-  .connect(
-    "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce"
-  )
-  .then(() => {
-    console.log("Base de datos conectada");
-  });
 
 //Handlebars
 server.engine("handlebars", handlebars.engine());

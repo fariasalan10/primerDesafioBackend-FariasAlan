@@ -1,10 +1,7 @@
-const CartsDao = require("../dao/carts.dao");
-const ItemsService = require("./products.service");
-
 class CartsService {
-  constructor() {
-    this.dao = new CartsDao();
-    this.itemsService = new ItemsService();
+  constructor(dao, itemsService) {
+    this.dao = dao;
+    this.itemsService = itemsService;
   }
 
   async getAll() {

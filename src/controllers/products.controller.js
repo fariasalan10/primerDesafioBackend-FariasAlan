@@ -1,12 +1,10 @@
-const ProductsService = require("../services/products.service");
-
-const productService = new ProductsService();
+const { productsService } = require("../repositories");
 
 class ProductsController {
   static async getAll(req, res) {
     let query = req.query;
     try {
-      let { docs, ...rest } = await productService.getAll(query);
+      let { docs, ...rest } = await productsService.getAll(query);
       res.send({ status: "success", payload: docs, ...rest });
     } catch (error) {
       console.log("Error al obtener los productos:", error);
@@ -16,7 +14,7 @@ class ProductsController {
 
   static async getById(req, res) {
     try {
-      const product = await productService.getById(req.params.pid);
+      const product = await productsService.getById(req.params.pid);
       if (product) {
         res.status(200).json(product);
       } else {
@@ -30,8 +28,8 @@ class ProductsController {
 
   static async addProduct(req, res) {
     try {
-      await productService.create(req.body);
-      const product = await productService.getAll();
+      await productsService.create(req.body);
+      const product = await productsService.getAll();
       res.status(201).json({ status: "success", message: "Product created" });
     } catch (error) {
       console.error("Error al crear producto:", error);
@@ -41,7 +39,7 @@ class ProductsController {
 
   static async updateProduct(req, res) {
     try {
-      await productService.update(req.params.pid, req.body);
+      await productsService.update(req.params.pid, req.body);
       res.status(200).json({ status: "success", message: "Product updated" });
     } catch (error) {
       console.error("Error al actualizar producto:", error);
@@ -51,7 +49,7 @@ class ProductsController {
 
   static async deleteProduct(req, res) {
     try {
-      const deleted = await productService.delete(req.params.pid);
+      const deleted = await productsService.delete(req.params.pid);
       if (deleted) {
         res.status(200).json({ status: "success", message: "Product deleted" });
       } else {

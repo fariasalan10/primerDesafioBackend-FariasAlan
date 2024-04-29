@@ -1,11 +1,9 @@
-const CartsService = require("../services/carts.service");
-
-const cartService = new CartsService();
+const { cartsService } = require("../repositories");
 
 class CartsController {
   static async createCart(req, res) {
     try {
-      await cartService.create();
+      await cartsService.create();
       res.status(201).json({ status: "success" });
     } catch (error) {
       console.error("Error al crear carrito:", error);
@@ -15,7 +13,7 @@ class CartsController {
 
   static async getCartById(req, res) {
     try {
-      const cart = await cartService.getById(req.params.id);
+      const cart = await cartsService.getById(req.params.id);
       if (cart) {
         res.status(200).json(cart);
       } else {
@@ -32,14 +30,14 @@ class CartsController {
     const productId = req.params.pid;
 
     try {
-      const cart = await cartService.getById(cartId);
+      const cart = await cartsService.getById(cartId);
 
       if (!cart) {
         res.status(404).json({ error: "Cart not found" });
         return;
       }
 
-      await cartService.addItem(cartId, productId);
+      await cartsService.addItem(cartId, productId);
       res.status(200).json({ status: "success" });
     } catch (error) {
       console.error("Error al agregar producto al carrito:", error);
@@ -49,7 +47,7 @@ class CartsController {
 
   static async deleteProductFromCart(req, res) {
     try {
-      const updatedCart = await cartService.deleteItemById(
+      const updatedCart = await cartsService.deleteItemById(
         req.params.id,
         req.params.pid
       );
@@ -63,7 +61,7 @@ class CartsController {
 
   static async updateCart(req, res) {
     try {
-      const updatedCart = await cartService.update(req.params.id, req.body);
+      const updatedCart = await cartsService.update(req.params.id, req.body);
       res
         .status(200)
         .json({ status: "success", message: "Cart updated", updatedCart });
@@ -74,7 +72,7 @@ class CartsController {
 
   static async updateQuantityProducts(req, res) {
     try {
-      const updatedCart = await cartService.updateProductQuantity(
+      const updatedCart = await cartsService.updateProductQuantity(
         req.params.id,
         req.params.pid,
         req.body.quantity
@@ -89,7 +87,7 @@ class CartsController {
 
   static async deleteCart(req, res) {
     try {
-      const updatedCart = await cartService.deleteAllProducts(req.params.id);
+      const updatedCart = await cartsService.deleteAllProducts(req.params.id);
       res
         .status(200)
         .json({ status: "success", message: "Cart cleaned", updatedCart });

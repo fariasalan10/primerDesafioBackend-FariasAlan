@@ -1,8 +1,6 @@
-const productsDao = require("../dao/products.dao");
-
 class ProductsService {
-  constructor() {
-    this.dao = new productsDao();
+  constructor(dao) {
+    this.dao = dao;
   }
 
   async getAll(queryParams = null) {

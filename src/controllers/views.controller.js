@@ -1,17 +1,13 @@
-const ProductManager = require("../dao/dbManagers/productManager");
-const CartManager = require("../dao/dbManagers/cartManager");
-
-const cm = new CartManager("../files/carts.json");
-const pm = new ProductManager("../files/products.json");
+const { productsService, cartsService } = require("../repositories");
 
 class ViewsController {
   static async getHome(req, res) {
-    const products = await pm.getProducts();
+    const products = await productsService.getProducts();
     res.render("products", { products, user: req.session.user });
   }
 
   static async getRealTimeProducts(req, res) {
-    const products = await pm.getProducts();
+    const products = await productsService.getProducts();
     res.render("realTimeProducts", { products });
   }
 
@@ -22,7 +18,7 @@ class ViewsController {
   static async getProducts(req, res) {
     try {
       const { page = 1, limit = 2 } = req.query;
-      const products = await pm.getProducts({
+      const products = await productsService.getProducts({
         page: parseInt(page),
         limit: parseInt(limit),
       });
@@ -47,7 +43,7 @@ class ViewsController {
 
   static async getCart(req, res) {
     try {
-      const cart = await cm.getCart(req.params.id);
+      const cart = await cartsService.getCart(req.params.id);
       if (cart) {
         const productsInCart = cart.products.map((item) => ({
           product: item.product.toObject(),
