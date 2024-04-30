@@ -14,9 +14,8 @@ class UsersService {
     return product;
   }
 
-  async getByPoperty(property, value) {
+  async getByProperty(property, value) {
     const product = await this.dao.getByProperty(property, value);
-
     if (!product) throw new Error("Product not found");
     return product;
   }

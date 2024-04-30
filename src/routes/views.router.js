@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const ViewsController = require("../controllers/views.controller");
+const checkRole = require("../middlewares/checkRole.middleware");
 
 const publicAcces = (req, res, next) => {
   if (req.session.user) {
@@ -22,7 +23,7 @@ router.get("/", privateAcces, ViewsController.getHome);
 
 router.get("/realtimeproducts", ViewsController.getRealTimeProducts);
 
-router.get("/chat", ViewsController.getChat);
+router.get("/chat", checkRole("user"), ViewsController.getChat);
 
 router.get("/products", ViewsController.getProducts);
 

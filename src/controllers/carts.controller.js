@@ -37,7 +37,7 @@ class CartsController {
         return;
       }
 
-      await cartsService.addItem(cartId, productId);
+      await cartsService.addProduct(cartId, productId);
       res.status(200).json({ status: "success" });
     } catch (error) {
       console.error("Error al agregar producto al carrito:", error);
@@ -47,7 +47,7 @@ class CartsController {
 
   static async deleteProductFromCart(req, res) {
     try {
-      const updatedCart = await cartsService.deleteItemById(
+      const updatedCart = await cartsService.deleteProductById(
         req.params.id,
         req.params.pid
       );
@@ -93,6 +93,21 @@ class CartsController {
         .json({ status: "success", message: "Cart cleaned", updatedCart });
     } catch (error) {
       console.error("Error al limpiar carrito:", error);
+    }
+  }
+
+  static async purchase(req, res) {
+    const { id } = req.params;
+    try {
+      const remainderProducts = await cartsService.purchase(
+        id,
+        req.session.user.email
+      );
+      res.send({ status: "success", payload: remainderProducts });
+    } catch (error) {
+      return res
+        .status(error.status || 500)
+        .send({ status: "error", error: error.message });
     }
   }
 }

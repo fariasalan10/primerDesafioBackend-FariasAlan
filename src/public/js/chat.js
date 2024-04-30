@@ -1,9 +1,9 @@
-let MyUserName = "";
-const socket = io();
-
 const userNameTitle = document.getElementById("userNameTitle");
 const messageInput = document.getElementById("messageInput");
 const messagesLog = document.getElementById("messagesLog");
+
+let MyUserName = userNameTitle.innerHTML;
+const socket = io();
 
 socket.on("chat messages", ({ data }) => {
   messagesLog.innerHTML = "";
@@ -22,12 +22,12 @@ messageInput.addEventListener("keyup", (event) => {
   }
 });
 
-Swal.fire({
-  title: "¡Bienvenido! <br> ¿Cuál es tu nombre?",
-  text: "Ingresa tu nombre de usuario",
-  input: "email",
-  allowOutsideClick: false,
-}).then((result) => {
-  MyUserName = result.value;
-  userNameTitle.innerHTML = MyUserName;
-});
+// Swal.fire({
+//   title: "¡Bienvenido! <br> ¿Cuál es tu nombre?",
+//   text: "Ingresa tu nombre de usuario",
+//   input: "email",
+//   allowOutsideClick: false,
+// }).then((result) => {
+//   MyUserName = result.value;
+//   userNameTitle.innerHTML = MyUserName;
+// });

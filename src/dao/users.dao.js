@@ -6,7 +6,10 @@ class UsersDao {
   }
 
   async getById(id) {
-    return await userModel.findOne({ _id: id }).populate("items.item").lean();
+    return await userModel
+      .findOne({ _id: id })
+      .populate("products.product")
+      .lean();
   }
 
   async getByProperty(property, name) {
@@ -15,12 +18,12 @@ class UsersDao {
     return await userModel.findOne(opts).lean();
   }
 
-  async create(item) {
-    return await userModel.create(item);
+  async create(product) {
+    return await userModel.create(product);
   }
 
-  async update(id, item) {
-    return await userModel.updateOne({ _id: id }, item);
+  async update(id, product) {
+    return await userModel.updateOne({ _id: id }, product);
   }
 
   async delete(id) {

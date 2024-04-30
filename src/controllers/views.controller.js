@@ -2,48 +2,71 @@ const { productsService, cartsService } = require("../repositories");
 
 class ViewsController {
   static async getHome(req, res) {
-    const products = await productsService.getProducts();
-    res.render("products", { products, user: req.session.user });
+    try {
+      const products = await productsService.getAll();
+      res.render("products", { products, user: req.session.user });
+    } catch (error) {
+      res
+        .status(error.status || 500)
+        .send({ status: "error", error: error.message });
+    }
   }
 
   static async getRealTimeProducts(req, res) {
-    const products = await productsService.getProducts();
-    res.render("realTimeProducts", { products });
+    try {
+      const products = await productsService.getAll();
+      res.render("realTimeProducts", { products, user: req.session.user });
+    } catch (error) {
+      res
+        .status(error.status || 500)
+        .send({ status: "error", error: error.message });
+    }
   }
 
   static async getChat(req, res) {
-    res.render("chat", {});
+    try {
+      res.render("chat", { user: req.session.user });
+    } catch (error) {
+      res
+        .status(error.status || 500)
+        .send({ status: "error", error: error.message });
+    }
   }
 
   static async getProducts(req, res) {
     try {
-      const { page = 1, limit = 2 } = req.query;
-      const products = await productsService.getProducts({
-        page: parseInt(page),
-        limit: parseInt(limit),
-      });
-      const newArray = products.docs.map((product) => {
-        const { _id, ...rest } = product.toObject();
-        return rest;
-      });
+      const { docs, ...rest } = await productsService.getAll(req.query);
+
+      const cart = await cartsService.getById(req.user.cart);
+
       res.render("products", {
-        products: newArray,
-        hasPrevPage: products.hasPrevPage,
-        hasNextPage: products.hasNextPage,
-        prevPage: products.prevPage,
-        nextPage: products.nextPage,
-        currentPage: products.page,
-        totalPages: products.totalPages,
+        user: req.session.user,
+        products: docs,
+        style: "/css/products.css",
+        cart,
+        ...rest,
       });
     } catch (error) {
-      console.log("Error al obtener los productos:", error);
-      res.status(500).send("Error al obtener los productos");
+      res
+        .status(error.status || 500)
+        .send({ status: "error", error: error.message });
+    }
+  }
+
+  static async getProductById(req, res) {
+    try {
+      const product = await productsService.getById(req.params.pid);
+      res.render("products", { product, style: "../public/css/products.css" });
+    } catch (error) {
+      res
+        .status(error.status || 500)
+        .send({ status: "error", error: error.message });
     }
   }
 
   static async getCart(req, res) {
     try {
-      const cart = await cartsService.getCart(req.params.id);
+      const cart = await cartsService.getById(req.params.id);
       if (cart) {
         const productsInCart = cart.products.map((item) => ({
           product: item.product.toObject(),

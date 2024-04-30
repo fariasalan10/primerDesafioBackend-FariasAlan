@@ -8,9 +8,13 @@ let TicketsDao;
 
 switch (persistence) {
   case "MONGO":
-    mongoose.connect(mongoConnectionLink).then(() => {
-      console.log("MongoDB connected");
-    });
+    mongoose
+      .connect(
+        "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce"
+      )
+      .then(() => {
+        console.log("MongoDB connected");
+      });
     CartsDao = require("./carts.dao");
     ProductsDao = require("./products.dao");
     UsersDao = require("./users.dao");

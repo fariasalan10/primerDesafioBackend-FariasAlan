@@ -3,6 +3,7 @@ const local = require("passport-local");
 const { createHash, isValidPassword } = require("../utils");
 const userModel = require("../dao/models/users");
 const GithubStrategy = require("passport-github2");
+const { usersService, cartsService } = require("../repositories/index");
 
 const LocalStrategy = local.Strategy;
 
@@ -45,25 +46,32 @@ const initializePassport = () => {
         passReqToCallback: true,
         usernameField: "email",
         passwordField: "password",
-        session: false,
       },
-      async (req, username, password, done) => {
-        const { first_name, last_name, email, age } = req.body;
+      async (req, email, password, done) => {
+        let existingUser;
+        existingUser = await usersService.getByProperty("email", email);
 
-        let user = await userModel.findOne({ email: username });
         try {
-          if (user) {
-            return done(null, false);
+          const { first_name, last_name, email, age } = req.body;
+
+          if (!first_name || !last_name || !email || !age) {
+            return done(null, false, { message: "All fields are required" });
           }
 
+          if (existingUser) {
+            return done(null, false, { message: "User already exists" });
+          }
+
+          const cart = await cartsService.create();
           const newUser = {
             first_name,
             last_name,
             email,
             age,
             password: createHash(password),
+            cart: cart._id,
           };
-          const result = await userModel.create(newUser);
+          const result = await usersService.create(newUser);
           console.log(newUser);
           return done(null, result);
         } catch (error) {
@@ -78,16 +86,15 @@ const initializePassport = () => {
     new LocalStrategy(
       {
         usernameField: "email",
-        session: false,
       },
       async (email, password, done) => {
         try {
-          const user = await userModel.findOne({ email });
+          const user = await usersService.getByProperty("email", email);
           if (!user) {
-            return done(null, false);
+            return done(null, false, { message: "User not found" });
           }
           if (!isValidPassword(user, password)) {
-            return done(null, false);
+            return done(null, false, { message: "Invalid password" });
           }
           return done(null, user);
         } catch (error) {

@@ -1,0 +1,24 @@
+.products-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  background: #a5b381;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+.navbar {
+  padding: 4px;
+  color: #ddd;
+  background: #332b47;
+}
+
+.navbar .user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

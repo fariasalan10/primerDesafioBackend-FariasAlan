@@ -1,7 +1,8 @@
 class CartsService {
-  constructor(dao, itemsService) {
+  constructor(dao, productsService, ticketService) {
     this.dao = dao;
-    this.itemsService = itemsService;
+    this.productsService = productsService;
+    this.ticketService = ticketService;
   }
 
   async getAll() {
@@ -30,37 +31,37 @@ class CartsService {
     return await this.dao.delete(id);
   }
 
-  async addItem(cartId, productId) {
+  async addProduct(cartId, productId) {
     const cart = await this.getById(cartId);
-    const index = cart.products.findIndex((p) => p.item == productId);
+    const index = cart.products.findIndex((p) => p.product == productId);
     if (index >= 0) {
       cart.products[index].quantity += 1;
     } else {
-      cart.products.push({ item: productId, quantity: 1 });
+      cart.products.push({ product: productId, quantity: 1 });
     }
     await this.update(cartId, cart);
     return;
   }
 
-  async deleteItemById(cartId, productId) {
+  async deleteProductById(cartId, productId) {
     const cart = await this.getById(cartId);
-    await this.itemsService.getById(productId);
+    await this.productsService.getById(productId);
 
-    const newContent = cart.products.filter((p) => p.item != productId);
+    const newContent = cart.products.filter((p) => p.product != productId);
     await this.update(cartId, { products: newContent });
     return this.getById(cartId);
   }
 
   async updateProductQuantity(cartId, productId, quantity) {
     const cart = await this.getById(cartId);
-    await this.itemsService.getById(productId);
+    await this.productsService.getById(productId);
 
     if (!quantity || quantity < 0 || isNaN(quantity)) {
       throw new Error("Invalid quantity");
     }
 
     const productInCartIndex = cart.products.findIndex(
-      (p) => p.item == productId
+      (p) => p.product == productId
     );
     if (productInCartIndex < 0) {
       throw new Error("Product not found in cart");
@@ -75,6 +76,34 @@ class CartsService {
     await this.getById(cartId);
     await this.update(cartId, { products: [] });
     return this.getById(cartId);
+  }
+
+  async purchase(cartId, userEmail) {
+    const cart = await this.getById(cartId);
+
+    const notPurchasedIds = [];
+    let totalAmount = 0;
+    for (let i = 0; i < cart.product.length; i++) {
+      const product = cart.products[i];
+      const remainder = product.product.stock - product.quantity;
+      if (remainder >= 0) {
+        await this.productsService.update(product.product._id, {
+          ...product.product,
+          stock: remainder,
+        });
+        await this.deleteProductById(cartId, product.product._id.toString());
+        totalAmount += product.quantity * product.product.price;
+      } else {
+        notPurchasedIds.push(product.product._id);
+      }
+    }
+
+    if (totalAmount > 0) {
+      await this.ticketService.generate(userEmail, totalAmount);
+      //await mailingService.sendPurchaseMail(req.user.email);
+    }
+
+    return notPurchasedIds;
   }
 }
 
