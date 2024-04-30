@@ -1,5 +1,6 @@
 const { createHash } = require("../utils");
 const userModel = require("../dao/models/users");
+const UserDTO = require("../dao/DTOs/UserDTO");
 
 class SessionController {
   static async register(req, res) {
@@ -98,17 +99,11 @@ class SessionController {
   }
 
   static async current(req, res) {
-    if (req.session.user) {
-      res.send({
-        status: "success",
-        user: req.session.user,
-      });
-    } else {
-      res.send({
-        status: "error",
-        message: "User not found",
-      });
-    }
+    const user = req.session.user;
+    const userDTO = new UserDTO(user);
+    res.send({
+      payload: userDTO,
+    });
   }
 }
 module.exports = SessionController;
