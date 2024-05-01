@@ -17,18 +17,18 @@ class BaseMemoryDAO {
     return result;
   }
 
-  async create(item) {
-    item._id = ++BaseMemoryDAO.id;
-    this.data.push(item);
-    return item;
+  async create(product) {
+    product._id = ++BaseMemoryDAO.id;
+    this.data.push(product);
+    return product;
   }
 
-  async update(id, item) {
+  async update(id, product) {
     let index = this.data.findIndex((d) => _id == id);
     if (index < 0) {
       throw new Error("id does not exists");
     }
-    this.data[index] = { ...this.data[index], ...item };
+    this.data[index] = { ...this.data[index], ...product };
     return this.data[index];
   }
 

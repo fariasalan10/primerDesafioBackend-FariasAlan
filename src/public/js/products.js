@@ -1,4 +1,5 @@
 const addToCart = (cartId, productId) => {
+  console.log(cartId, productId);
   fetch(`/api/carts/${cartId}/product/${productId}`, {
     method: "POST",
   }).then((res) => {

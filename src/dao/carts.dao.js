@@ -6,15 +6,18 @@ class CartsDao {
   }
 
   async getById(id) {
-    return await cartModel.findOne({ _id: id }).populate("items.item").lean();
+    return await cartModel
+      .findOne({ _id: id })
+      .populate("products.product")
+      .lean();
   }
 
-  async create(item) {
-    return await cartModel.create(item);
+  async create(product) {
+    return await cartModel.create(product);
   }
 
-  async update(id, item) {
-    return await cartModel.updateOne({ _id: id }, item);
+  async update(id, product) {
+    return await cartModel.updateOne({ _id: id }, product);
   }
 
   async delete(id) {

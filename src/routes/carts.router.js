@@ -9,7 +9,7 @@ router.get("/:id", CartsController.getCartById);
 
 router.post(
   "/:id/product/:pid",
-  checkRole("user"),
+  checkRole("usuario"),
   CartsController.addProductToCart
 );
 

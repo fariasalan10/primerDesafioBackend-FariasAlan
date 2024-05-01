@@ -9,15 +9,15 @@ class UsersService {
 
   async getById(id) {
     const product = await this.dao.getById(id);
-
     if (!product) throw new Error("Product not found");
     return product;
   }
 
   async getByProperty(property, value) {
-    const product = await this.dao.getByProperty(property, value);
-    if (!product) throw new Error("Product not found");
-    return product;
+    const user = await this.dao.getByProperty(property, value);
+    console.log(user);
+    if (!user) throw new Error("Product not found");
+    return user;
   }
 
   async create(user) {

@@ -33,11 +33,12 @@ class CartsService {
 
   async addProduct(cartId, productId) {
     const cart = await this.getById(cartId);
-    const index = cart.products.findIndex((p) => p.product == productId);
+    console.log("cart --->", cart);
+    const index = cart.items.findIndex((i) => i.product._id == productId);
     if (index >= 0) {
-      cart.products[index].quantity += 1;
+      cart.items[index].quantity += 1;
     } else {
-      cart.products.push({ product: productId, quantity: 1 });
+      cart.items.push({ product: productId, quantity: 1 });
     }
     await this.update(cartId, cart);
     return;

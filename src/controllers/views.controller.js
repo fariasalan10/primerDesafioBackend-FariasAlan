@@ -68,9 +68,9 @@ class ViewsController {
     try {
       const cart = await cartsService.getById(req.params.id);
       if (cart) {
-        const productsInCart = cart.products.map((item) => ({
-          product: item.product.toObject(),
-          quantity: item.quantity,
+        const productsInCart = cart.products.map((product) => ({
+          product: product.product.toObject(),
+          quantity: product.quantity,
         }));
         res.render("cart", { products: productsInCart });
       }

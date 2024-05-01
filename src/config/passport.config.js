@@ -47,12 +47,11 @@ const initializePassport = () => {
         usernameField: "email",
         passwordField: "password",
       },
-      async (req, email, password, done) => {
-        let existingUser;
-        existingUser = await usersService.getByProperty("email", email);
-
+      async (req, username, password, done) => {
         try {
+          let existingUser;
           const { first_name, last_name, email, age } = req.body;
+          existingUser = await userModel.findOne({ email: username });
 
           if (!first_name || !last_name || !email || !age) {
             return done(null, false, { message: "All fields are required" });
@@ -89,7 +88,7 @@ const initializePassport = () => {
       },
       async (email, password, done) => {
         try {
-          const user = await usersService.getByProperty("email", email);
+          const user = await userModel.findOne({ email });
           if (!user) {
             return done(null, false, { message: "User not found" });
           }

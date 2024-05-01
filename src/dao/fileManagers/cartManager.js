@@ -9,7 +9,7 @@ class CartManager {
   async addCart() {
     const content = await fs.readFile(this.path, "utf-8");
     const carts = JSON.parse(content);
-    const cart = { id: ++CartManager.id, items: [] };
+    const cart = { id: ++CartManager.id, products: [] };
     carts.push(cart);
     await fs.writeFile(this.path, JSON.stringify(carts, null, "\t"));
     return cart;
@@ -27,18 +27,18 @@ class CartManager {
     }
   }
 
-  async addProduct(id, itemId) {
+  async addProduct(id, productId) {
     const content = await fs.readFile(this.path, "utf-8"); //leemos archivo
     const carts = JSON.parse(content); //convertimos archivo en objeto javascript
 
-    const col_index = carts.findIndex((i) => i.id == id); //buscamos un item con ese mismo id
+    const col_index = carts.findIndex((i) => i.id == id); //buscamos un product con ese mismo id
     const newCart = { ...carts[col_index] };
 
-    const index = newCart.items.findIndex((i) => i.item == itemId);
+    const index = newCart.products.findIndex((i) => i.product == productId);
     if (index >= 0) {
-      newCart.items[index].quantity += 1;
+      newCart.products[index].quantity += 1;
     } else {
-      newCart.items.push({ item: itemId, quantity: 1 });
+      newCart.products.push({ product: productId, quantity: 1 });
     }
 
     newCart[col_index] = newCart;

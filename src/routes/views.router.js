@@ -23,7 +23,7 @@ router.get("/", privateAcces, ViewsController.getHome);
 
 router.get("/realtimeproducts", ViewsController.getRealTimeProducts);
 
-router.get("/chat", checkRole("user"), ViewsController.getChat);
+router.get("/chat", checkRole("usuario"), ViewsController.getChat);
 
 router.get("/products", ViewsController.getProducts);
 
