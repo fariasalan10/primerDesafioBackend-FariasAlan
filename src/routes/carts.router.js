@@ -3,9 +3,9 @@ const CartsController = require("../controllers/carts.controller");
 const checkRole = require("../middlewares/checkRole.middleware");
 const router = Router();
 
-router.post("/", CartsController.createCart);
+router.post("/", CartsController.create);
 
-router.get("/:id", CartsController.getCartById);
+router.get("/:id", CartsController.getById);
 
 router.post(
   "/:id/product/:pid",
@@ -13,13 +13,13 @@ router.post(
   CartsController.addProductToCart
 );
 
-router.delete("/:id/product/:pid", CartsController.deleteProductFromCart);
+router.delete("/:id/product/:pid", CartsController.deleteProduct);
 
-router.put("/:id", CartsController.updateCart);
+router.put("/:id", CartsController.update);
 
 router.put("/:id/product/:pid", CartsController.updateQuantityProducts);
 
-router.delete("/:id", CartsController.deleteCart);
+router.delete("/:id", CartsController.delete);
 
 router.get("/:id/purchase", CartsController.purchase);
 

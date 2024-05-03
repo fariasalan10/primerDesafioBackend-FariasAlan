@@ -1,51 +1,56 @@
-const { cartsService } = require("../repositories");
+const { cartsService, productsService } = require("../repositories");
 
 class CartsController {
-  static async createCart(req, res) {
+  static async create(req, res) {
     try {
       await cartsService.create();
-      res.status(201).json({ status: "success" });
+      res.send({ status: "success" });
     } catch (error) {
       console.error("Error al crear carrito:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
-  static async getCartById(req, res) {
+  static async getById(req, res) {
     try {
-      const cart = await cartsService.getById(req.params.id);
-      if (cart) {
-        res.status(200).json(cart);
-      } else {
-        res.status(404).json({ error: "Cart not found" });
-      }
+      const id = req.params.id;
+      const cart = await cartsService.getById(id);
+      res.send(cart);
     } catch (error) {
       console.error("Error al obtener carrito:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
-  static async addProductToCart(req, res) {
-    const cartId = req.params.id;
-    const productId = req.params.pid;
-
+  static async getAll(req, res) {
     try {
-      const cart = await cartsService.getById(cartId);
-
-      if (!cart) {
-        res.status(404).json({ error: "Cart not found" });
-        return;
-      }
-
-      await cartsService.addProduct(cartId, productId);
-      res.status(200).json({ status: "success" });
+      const carts = await cartsService.getAll();
+      res.send(carts);
     } catch (error) {
-      console.error("Error al agregar producto al carrito:", error);
+      console.error("Error al obtener carritos:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
 
-  static async deleteProductFromCart(req, res) {
+  static async addProductToCart(req, res) {
+    try {
+      const cartId = req.params.id;
+      const productId = req.params.pid;
+      const cart = await cartsService.getById(cartId);
+      const product = await productsService.getById(productId);
+
+      if (product) {
+        await cartsService.addProduct(cartId, productId);
+        res.send({ status: "success", message: "Product added to cart" });
+      } else {
+        res.status(404).json({ error: "Product not found" });
+      }
+    } catch (error) {
+      console.error("Error al agregar producto al carrito:", error);
+    }
+  }
+
+  static async deleteProduct(req, res) {
     try {
       const updatedCart = await cartsService.deleteProductById(
         req.params.id,
@@ -59,9 +64,12 @@ class CartsController {
     }
   }
 
-  static async updateCart(req, res) {
+  static async update(req, res) {
     try {
-      const updatedCart = await cartsService.update(req.params.id, req.body);
+      const updatedCart = await cartsService.updateCartProducts(
+        req.params.id,
+        req.body
+      );
       res
         .status(200)
         .json({ status: "success", message: "Cart updated", updatedCart });
@@ -85,7 +93,7 @@ class CartsController {
     }
   }
 
-  static async deleteCart(req, res) {
+  static async delete(req, res) {
     try {
       const updatedCart = await cartsService.deleteAllProducts(req.params.id);
       res
@@ -99,10 +107,7 @@ class CartsController {
   static async purchase(req, res) {
     const { id } = req.params;
     try {
-      const remainderProducts = await cartsService.purchase(
-        id,
-        req.session.user.email
-      );
+      const remainderProducts = await cartsService.purchase(id, req.user.email);
       res.send({ status: "success", payload: remainderProducts });
     } catch (error) {
       return res

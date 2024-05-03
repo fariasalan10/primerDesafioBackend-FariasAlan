@@ -1,7 +1,7 @@
 class CartsService {
-  constructor(dao, productsService, ticketService) {
+  constructor(dao, productService, ticketService) {
     this.dao = dao;
-    this.productsService = productsService;
+    this.productService = productService;
     this.ticketService = ticketService;
   }
 
@@ -10,59 +10,76 @@ class CartsService {
   }
 
   async getById(id) {
-    const cart = await this.dao.getById(id);
-    if (!cart) {
+    try {
+      const cart = await this.dao.getById(id);
+      return cart;
+    } catch (error) {
       throw new Error("Cart not found");
     }
-    return cart;
   }
 
-  async create() {
-    return await this.dao.create({ products: [] });
+  async create(cart) {
+    return await this.dao.create(cart);
   }
 
   async update(id, product) {
-    await this.getById(id);
+    const cart = await this.getById(id);
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
     return await this.dao.update(id, product);
   }
 
   async delete(id) {
-    await this.getById(id);
+    const cart = await this.getById(id);
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
     return await this.dao.delete(id);
   }
 
   async addProduct(cartId, productId) {
     const cart = await this.getById(cartId);
-    console.log("cart --->", cart);
-    const index = cart.items.findIndex((i) => i.product._id == productId);
+    const index = cart.products.findIndex(
+      (i) => i.product._id.toString() == productId
+    );
+
     if (index >= 0) {
-      cart.items[index].quantity += 1;
+      cart.products[index].quantity += 1;
     } else {
-      cart.items.push({ product: productId, quantity: 1 });
+      cart.products.push({ product: productId, quantity: 1 });
     }
     await this.update(cartId, cart);
-    return;
+    return cart;
   }
 
   async deleteProductById(cartId, productId) {
     const cart = await this.getById(cartId);
-    await this.productsService.getById(productId);
+    await this.productService.getById(productId);
 
-    const newContent = cart.products.filter((p) => p.product != productId);
+    const newContent = cart.products.filter(
+      (p) => p.product._id.toString() != productId
+    );
     await this.update(cartId, { products: newContent });
+    return this.getById(cartId);
+  }
+
+  async updateCartProducts(cartId, content) {
+    await this.getById(cartId);
+    await this.update(cartId, { products: content });
     return this.getById(cartId);
   }
 
   async updateProductQuantity(cartId, productId, quantity) {
     const cart = await this.getById(cartId);
-    await this.productsService.getById(productId);
+    await this.productService.getById(productId);
 
     if (!quantity || quantity < 0 || isNaN(quantity)) {
       throw new Error("Invalid quantity");
     }
 
     const productInCartIndex = cart.products.findIndex(
-      (p) => p.product == productId
+      (p) => p.product._id.toString() == productId
     );
     if (productInCartIndex < 0) {
       throw new Error("Product not found in cart");
@@ -80,28 +97,27 @@ class CartsService {
   }
 
   async purchase(cartId, userEmail) {
-    const cart = await this.getById(cartId);
+    const cart = await this.dao.getById(cartId);
 
     const notPurchasedIds = [];
     let totalAmount = 0;
-    for (let i = 0; i < cart.product.length; i++) {
-      const product = cart.products[i];
-      const remainder = product.product.stock - product.quantity;
+    for (let i = 0; i < cart.products.length; i++) {
+      const item = cart.products[i];
+      const remainder = item.product.stock - item.quantity;
       if (remainder >= 0) {
-        await this.productsService.update(product.product._id, {
-          ...product.product,
+        await this.productService.update(item.product._id, {
+          ...item.product,
           stock: remainder,
         });
-        await this.deleteProductById(cartId, product.product._id.toString());
-        totalAmount += product.quantity * product.product.price;
+        await this.deleteProductById(cartId, item.product._id.toString());
+        totalAmount += item.quantity * item.product.price;
       } else {
-        notPurchasedIds.push(product.product._id);
+        notPurchasedIds.push(item.product._id);
       }
     }
 
     if (totalAmount > 0) {
       await this.ticketService.generate(userEmail, totalAmount);
-      //await mailingService.sendPurchaseMail(req.user.email);
     }
 
     return notPurchasedIds;

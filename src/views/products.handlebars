@@ -1,11 +1,12 @@
-<H1>PRINCIPAL - PRODUCTOS</H1>
+<H1>USUARIO</H1>
 <div class="navbar">
     <div class="user-info">
-        <p>Bienvenido, {{user.email}}</p>
-        <p>Edad: {{user.age}}</p>
+        <p>Bienvenido, {{user.name}}</p>
+        <p>Email: {{user.email}}</p>
+        <p>Edad: {{user.age}}</p>        
+        <p>Cart id: {{user.cart}}</p>
+        <p>Rol: {{user.role}}</p>
         <a href="/api/sessions/logout"><button>logout</button></a>
-        <p>cart id: {{user.cart}}</p>
-        <p>ROLE: {{user.role}}</p>
     </div>
 </div>
 

@@ -12,8 +12,8 @@ class CartsDao {
       .lean();
   }
 
-  async create(product) {
-    return await cartModel.create(product);
+  async create(cart) {
+    return await cartModel.create(cart);
   }
 
   async update(id, product) {
