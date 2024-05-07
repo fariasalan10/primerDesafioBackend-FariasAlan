@@ -32,7 +32,7 @@ class CartsController {
     }
   }
 
-  static async addProductToCart(req, res) {
+  static async addProduct(req, res) {
     try {
       const cartId = req.params.id;
       const productId = req.params.pid;

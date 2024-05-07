@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<h2>Cart</h2>
+<h2>CARRITO</h2>
 {{#each cart.products}}
     <p>{{this.product.description}} quantity {{this.quantity}} ${{this.product.price}}<button onclick="deleteFromCart('{{../user.cart}}','{{this.product._id}}')">remove</button> </p>
 
