@@ -4,7 +4,8 @@ class ViewsController {
   static async getHome(req, res) {
     try {
       const products = await productsService.getAll();
-      res.render("products", { products, user: req.session.user });
+      const cart = await cartsService.getById(req.user.cart);
+      res.render("products", { products, cart, user: req.session.user });
     } catch (error) {
       res
         .status(error.status || 500)
