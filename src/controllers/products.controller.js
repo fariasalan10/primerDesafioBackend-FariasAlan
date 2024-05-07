@@ -1,4 +1,7 @@
 const { productsService } = require("../repositories");
+const CustomError = require("../utils/errorHandling/customError");
+const ErrorTypes = require("../utils/errorHandling/errorTypes");
+const { ProductErrorInfo } = require("../utils/errorHandling/info");
 
 class ProductsController {
   static async getAll(req, res) {
