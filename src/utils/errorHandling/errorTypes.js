@@ -4,6 +4,7 @@ const ErrorTypes = {
   INVALID_TYPE: 2,
   DATABASE_ERROR: 3,
   INVALID_PARAMETERS: 4,
+  NOT_FOUND: 5,
 };
 
 module.exports = ErrorTypes;

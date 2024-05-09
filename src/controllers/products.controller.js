@@ -1,7 +1,7 @@
 const { productsService } = require("../repositories");
 const CustomError = require("../utils/errorHandling/customError");
 const ErrorTypes = require("../utils/errorHandling/errorTypes");
-const { ProductErrorInfo } = require("../utils/errorHandling/info");
+const { idErrorInfo } = require("../utils/errorHandling/info");
 
 class ProductsController {
   static async getAll(req, res) {
@@ -21,18 +21,21 @@ class ProductsController {
       if (product) {
         res.status(200).json(product);
       } else {
-        res.status(404).json({ error: "Product not found" });
+        throw new CustomError({
+          name: "Product not found",
+          cause: idErrorInfo(req.params.pid),
+          message: "Product not found. Id not valid or not exist",
+          code: ErrorTypes.NOT_FOUND,
+        });
       }
     } catch (error) {
-      console.error("Error al obtener producto:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      next(error);
     }
   }
 
   static async addProduct(req, res) {
     try {
       await productsService.create(req.body);
-      const product = await productsService.getAll();
       res.status(201).json({ status: "success", message: "Product created" });
     } catch (error) {
       console.error("Error al crear producto:", error);
@@ -56,11 +59,15 @@ class ProductsController {
       if (deleted) {
         res.status(200).json({ status: "success", message: "Product deleted" });
       } else {
-        res.status(404).json({ error: "Product not found" });
+        throw new CustomError({
+          name: "Product to delete not found",
+          cause: idErrorInfo(req.params.pid),
+          message: "Product not found. Id not valid or not exist",
+          code: ErrorTypes.NOT_FOUND,
+        });
       }
     } catch (error) {
-      console.error("Error al eliminar producto:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      next(error);
     }
   }
 }

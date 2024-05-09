@@ -21,13 +21,19 @@ const privateAcces = (req, res, next) => {
 
 router.get("/", privateAcces, ViewsController.getHome);
 
-router.get("/realtimeproducts", ViewsController.getRealTimeProducts);
+router.get(
+  "/realtimeproducts",
+  checkRole("admin"),
+  ViewsController.getRealTimeProducts
+);
 
 router.get("/chat", checkRole("usuario"), ViewsController.getChat);
 
 router.get("/products", ViewsController.getProducts);
 
 router.get("/carts/:id", ViewsController.getCart);
+
+router.get("/mockingproducts", ViewsController.mockProducts);
 
 router.get("/register", publicAcces, ViewsController.getRegister);
 

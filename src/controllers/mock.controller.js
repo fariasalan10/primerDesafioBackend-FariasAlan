@@ -1,4 +1,4 @@
-const generateProducts = require("../utils/generateProducts");
+const generateProducts = require("../utils/faker");
 
 class MockController {
   static async generateProducts(req, res) {

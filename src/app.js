@@ -13,6 +13,7 @@ const productsRouter = require("./routes/products.router");
 const cartsRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
 const sessionRouter = require("./routes/sessions.router");
+const { mockRouter } = require("./routes/mock.router");
 
 const messageModel = require("./dao/models/messages");
 const { mongoConnectionLink, sessionSecret } = require("./config/config");
@@ -55,6 +56,7 @@ server.use("/api/products", productsRouter);
 server.use("/api/carts", cartsRouter);
 server.use("/", viewsRouter);
 server.use("/api/sessions", sessionRouter);
+server.use("/api/mock", mockRouter);
 
 const serverHttp = server.listen(port, () => {
   console.log(`Server listening on port ${port}`);

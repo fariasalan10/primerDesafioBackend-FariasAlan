@@ -1,5 +1,9 @@
 const { cartsService, productsService } = require("../repositories");
 
+const CustomError = require("../utils/errorHandling/customError");
+const ErrorTypes = require("../utils/errorHandling/errorTypes");
+const { idErrorInfo } = require("../utils/errorHandling/info");
+
 class CartsController {
   static async create(req, res) {
     try {
@@ -36,17 +40,21 @@ class CartsController {
     try {
       const cartId = req.params.id;
       const productId = req.params.pid;
-      const cart = await cartsService.getById(cartId);
       const product = await productsService.getById(productId);
 
       if (product) {
         await cartsService.addProduct(cartId, productId);
         res.send({ status: "success", message: "Product added to cart" });
       } else {
-        res.status(404).json({ error: "Product not found" });
+        throw new CustomError({
+          name: "Product not found",
+          cause: idErrorInfo(productId),
+          message: "Product not found. Id not valid or not exist",
+          code: ErrorTypes.NOT_FOUND,
+        });
       }
     } catch (error) {
-      console.error("Error al agregar producto al carrito:", error);
+      next(error);
     }
   }
 

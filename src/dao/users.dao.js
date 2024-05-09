@@ -18,12 +18,12 @@ class UsersDao {
     return await userModel.findOne(opts).lean();
   }
 
-  async create(product) {
-    return await userModel.create(product);
+  async create(user) {
+    return await userModel.create(user);
   }
 
-  async update(id, product) {
-    return await userModel.updateOne({ _id: id }, product);
+  async update(id, user) {
+    return await userModel.updateOne({ _id: id }, user);
   }
 
   async delete(id) {

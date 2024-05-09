@@ -1,4 +1,8 @@
 const { productsService, cartsService } = require("../repositories");
+const CustomError = require("../utils/errorHandling/customError");
+const ErrorTypes = require("../utils/errorHandling/errorTypes");
+const { idErrorInfo } = require("../utils/errorHandling/info");
+const generateProducts = require("../utils/faker");
 
 class ViewsController {
   static async getHome(req, res) {
@@ -75,12 +79,29 @@ class ViewsController {
         }));
         res.render("cart", { products: productsInCart });
       }
-      res.status(404).send("Carrito no encontrado");
-      console.log("Error al obtener el carrito:", error);
+      throw new CustomError({
+        name: "Cart not found",
+        cause: idErrorInfo(req.params.id),
+        message: "Cart not found. Id not valid or not exist",
+        code: ErrorTypes.NOT_FOUND,
+      });
     } catch (error) {
       console.log("Error al obtener el carrito:", error);
       res.status(500).send("Carrito no encontrado");
     }
+  }
+
+  static async mockProducts(req, res) {
+    const quantity = req.query.quantity || 100;
+    const products = [];
+
+    for (let i = 0; i < quantity; i++) {
+      products.push(generateProducts());
+    }
+    res.render("mockingProducts", {
+      products,
+      style: "../public/css/products.css",
+    });
   }
 
   static async getRegister(req, res) {
