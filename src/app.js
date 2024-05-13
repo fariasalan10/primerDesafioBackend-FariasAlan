@@ -14,9 +14,13 @@ const cartsRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
 const sessionRouter = require("./routes/sessions.router");
 const { mockRouter } = require("./routes/mock.router");
+const { loggerTestRouter } = require("./routes/loggerTest.router");
 
 const messageModel = require("./dao/models/messages");
 const { mongoConnectionLink, sessionSecret } = require("./config/config");
+const errorHandler = require("./middlewares/errorHandling.middleware");
+const checkRole = require("./middlewares/checkRole.middleware");
+const addLogger = require("./middlewares/addLogger.middleware");
 const port = 8080;
 
 const server = express();
@@ -31,8 +35,7 @@ server.use(express.static(`${__dirname}/public`));
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 
-//Middlewares
-
+//Sessions
 server.use(
   session({
     store: MongoStore.create({
@@ -57,6 +60,7 @@ server.use("/api/carts", cartsRouter);
 server.use("/", viewsRouter);
 server.use("/api/sessions", sessionRouter);
 server.use("/api/mock", mockRouter);
+server.use("/api/logger", loggerTestRouter);
 
 const serverHttp = server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
@@ -90,3 +94,7 @@ io.on("connection", async (socket) => {
     io.emit("chat messages", { data });
   });
 });
+
+//Middlewares
+server.use(addLogger);
+server.use(errorHandler);
