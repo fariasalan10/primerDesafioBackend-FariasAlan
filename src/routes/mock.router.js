@@ -3,7 +3,7 @@ const router = Router();
 
 const MockController = require("../controllers/mock.controller");
 
-router.get("/mockingProducts", MockController.generateProducts);
+router.get("/mockingProducts", MockController.getUsers);
 
 module.exports = {
   mockRouter: router,

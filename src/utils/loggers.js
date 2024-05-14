@@ -30,7 +30,7 @@ const devLogger = winston.createLogger({
       ),
     }),
   ],
-  defaultMeta: { env: "development" },
+  defaultMeta: { env: "DEV" },
 });
 
 const prodLogger = winston.createLogger({
@@ -49,7 +49,7 @@ const prodLogger = winston.createLogger({
       format: winston.format.json(),
     }),
   ],
-  defaultMeta: { env: "production" },
+  defaultMeta: { env: "PROD" },
 });
 
 module.exports = {

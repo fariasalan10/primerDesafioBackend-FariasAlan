@@ -1,6 +1,9 @@
 const { createHash } = require("../utils");
 const userModel = require("../dao/models/users");
 const UserDTO = require("../dao/DTOs/UserDTO");
+const CustomError = require("../utils/errorHandling/customError");
+const { UserErrorInfo } = require("../utils/errorHandling/info");
+const ErrorTypes = require("../utils/errorHandling/errorTypes");
 
 class SessionController {
   static async register(req, res) {
@@ -10,12 +13,18 @@ class SessionController {
     });
   }
 
-  static async failRegister(req, res) {
-    alert("User already exists");
-    res.status(400).send({
-      status: "error",
-      message: "Missing required information",
-    });
+  static async failRegister(req, res, next) {
+    try {
+      alert("User already exists");
+      throw new CustomError({
+        name: "User already exists",
+        cause: "User already exists",
+        message: "User already exists",
+        code: ErrorTypes.INVALID_TYPE,
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 
   static async login(req, res) {

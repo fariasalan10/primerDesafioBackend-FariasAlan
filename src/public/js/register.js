@@ -20,7 +20,6 @@ registerForm.addEventListener("submit", (event) => {
       } else {
         alert("¡Tu usuario fue creado correctamente!");
         window.location.replace("/login");
-        console.log(data);
         return;
       }
     });

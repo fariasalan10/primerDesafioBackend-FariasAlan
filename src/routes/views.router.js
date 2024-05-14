@@ -23,7 +23,7 @@ router.get("/", privateAcces, ViewsController.getHome);
 
 router.get(
   "/realtimeproducts",
-  checkRole("admin"),
+  checkRole("usuario"),
   ViewsController.getRealTimeProducts
 );
 

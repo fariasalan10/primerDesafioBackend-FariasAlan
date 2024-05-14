@@ -1,11 +1,11 @@
 const generateProducts = require("../utils/faker");
 
 class MockController {
-  static async generateProducts(req, res) {
+  static async getUsers(req, res) {
     try {
       let mockProducts = [];
 
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 100; i++) {
         mockProducts.push(generateProducts());
       }
 

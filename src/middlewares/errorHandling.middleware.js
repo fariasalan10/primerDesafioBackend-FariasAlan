@@ -1,6 +1,7 @@
 const ErrorTypes = require("../utils/errorHandling/errorTypes");
 
 const errorHandler = (err, req, res, next) => {
+  console.log(err.cause);
   switch (err.code) {
     case ErrorTypes.UNKNOW:
       res.status(500).send({ status: "error", error: err.name });

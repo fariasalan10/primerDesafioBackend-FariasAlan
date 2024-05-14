@@ -4,18 +4,26 @@ const ErrorTypes = require("../utils/errorHandling/errorTypes");
 const { idErrorInfo } = require("../utils/errorHandling/info");
 
 class ProductsController {
-  static async getAll(req, res) {
-    let query = req.query;
+  static async getAll(req, res, next) {
     try {
-      let { docs, ...rest } = await productsService.getAll(query);
-      res.send({ status: "success", payload: docs, ...rest });
+      let query = req.query;
+      if (query) {
+        let { docs, ...rest } = await productsService.getAll(query);
+        res.send({ status: "success", payload: docs, ...rest });
+      } else {
+        throw new CustomError({
+          name: "Products not found",
+          cause: "Products not found",
+          message: "Products not found",
+          code: ErrorTypes.NOT_FOUND,
+        });
+      }
     } catch (error) {
-      console.log("Error al obtener los productos:", error);
-      res.status(500).send("Error al obtener los productos");
+      next(error);
     }
   }
 
-  static async getById(req, res) {
+  static async getById(req, res, next) {
     try {
       const product = await productsService.getById(req.params.pid);
       if (product) {
@@ -33,27 +41,55 @@ class ProductsController {
     }
   }
 
-  static async addProduct(req, res) {
+  static async addProduct(req, res, next) {
     try {
+      const { title, description, price, thumbnail, code, stock, status } =
+        req.body;
+
+      if (
+        !title ||
+        !description ||
+        !price ||
+        !thumbnail ||
+        !code ||
+        !stock ||
+        !status
+      ) {
+        throw new CustomError({
+          name: "missing fields",
+          cause: ProductErrorInfo(req.body),
+          message: "some fields are missing",
+          code: ErrorTypes.INVALID_PARAMETERS,
+        });
+      }
       await productsService.create(req.body);
       res.status(201).json({ status: "success", message: "Product created" });
     } catch (error) {
-      console.error("Error al crear producto:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      next(error);
     }
   }
 
-  static async updateProduct(req, res) {
+  static async updateProduct(req, res, next) {
     try {
-      await productsService.update(req.params.pid, req.body);
-      res.status(200).json({ status: "success", message: "Product updated" });
+      const id = req.params.pid;
+      const product = req.body;
+      if (id || product) {
+        await productsService.update(id, product);
+        res.status(200).json({ status: "success", message: "Product updated" });
+      } else {
+        throw new CustomError({
+          name: "Product to update not found",
+          cause: idErrorInfo(req.params.pid),
+          message: "Product not found. Id not valid or not exist",
+          code: ErrorTypes.NOT_FOUND,
+        });
+      }
     } catch (error) {
-      console.error("Error al actualizar producto:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      next(error);
     }
   }
 
-  static async deleteProduct(req, res) {
+  static async deleteProduct(req, res, next) {
     try {
       const deleted = await productsService.delete(req.params.pid);
       if (deleted) {

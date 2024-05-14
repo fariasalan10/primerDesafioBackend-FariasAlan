@@ -54,10 +54,12 @@ const initializePassport = () => {
           existingUser = await userModel.findOne({ email: username });
 
           if (!first_name || !last_name || !email || !age) {
+            req.logger.warn("All fields are required");
             return done(null, false, { message: "All fields are required" });
           }
 
           if (existingUser) {
+            req.logger.info("User already exists");
             return done(null, false, { message: "User already exists" });
           }
 
@@ -71,7 +73,6 @@ const initializePassport = () => {
             cart: cart._id,
           };
           const result = await usersService.create(newUser);
-          console.log(newUser);
           return done(null, result);
         } catch (error) {
           return done(error);

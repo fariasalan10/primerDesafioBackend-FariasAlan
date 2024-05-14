@@ -1,3 +1,6 @@
+const CustomError = require("../../utils/errorHandling/customError");
+const ErrorTypes = require("../../utils/errorHandling/errorTypes");
+
 const fs = require("fs").promises;
 class ProductManager {
   static id = 0;
@@ -17,7 +20,12 @@ class ProductManager {
       // Verificar si el producto ya existe
       const existingProduct = products.find((product) => product.code == code);
       if (existingProduct) {
-        throw new Error("El producto ya existe");
+        throw new CustomError({
+          name: "Product already exists",
+          cause: "Product already exists",
+          message: "Product already exists. Try another code",
+          code: ErrorTypes.INVALID_PARAMETERS,
+        });
       }
 
       const newProduct = {

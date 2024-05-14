@@ -69,7 +69,7 @@ class ViewsController {
     }
   }
 
-  static async getCart(req, res) {
+  static async getCart(req, res, next) {
     try {
       const cart = await cartsService.getById(req.params.id);
       if (cart) {
@@ -86,8 +86,7 @@ class ViewsController {
         code: ErrorTypes.NOT_FOUND,
       });
     } catch (error) {
-      console.log("Error al obtener el carrito:", error);
-      res.status(500).send("Carrito no encontrado");
+      next(error);
     }
   }
 

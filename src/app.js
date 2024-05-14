@@ -54,6 +54,8 @@ initializePassport();
 server.use(passport.initialize());
 server.use(passport.session());
 
+server.use(addLogger);
+
 //Routers
 server.use("/api/products", productsRouter);
 server.use("/api/carts", cartsRouter);
@@ -96,5 +98,4 @@ io.on("connection", async (socket) => {
 });
 
 //Middlewares
-server.use(addLogger);
 server.use(errorHandler);
