@@ -19,7 +19,7 @@ const privateAcces = (req, res, next) => {
   }
 };
 
-router.get("/", privateAcces, ViewsController.getHome);
+router.get("/", ViewsController.getHome);
 
 router.get(
   "/realtimeproducts",
@@ -35,10 +35,12 @@ router.get("/carts/:id", ViewsController.getCart);
 
 router.get("/mockingproducts", ViewsController.mockProducts);
 
-router.get("/register", publicAcces, ViewsController.getRegister);
+router.get("/register", ViewsController.getRegister);
 
-router.get("/login", publicAcces, ViewsController.getLogin);
+router.get("/login", ViewsController.getLogin);
 
-router.get("/resetPassword", publicAcces, ViewsController.getResetPassword);
+router.get("/resetPassword", ViewsController.getResetPassword);
+
+router.get("/changePassword", ViewsController.getChangePassword);
 
 module.exports = router;

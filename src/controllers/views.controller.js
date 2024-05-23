@@ -114,6 +114,10 @@ class ViewsController {
   static async getResetPassword(req, res) {
     res.render("resetPassword", {});
   }
+
+  static async getChangePassword(req, res) {
+    res.render("changePassword", {});
+  }
 }
 
 module.exports = ViewsController;

@@ -1,9 +1,13 @@
-const { createHash } = require("../utils");
-const userModel = require("../dao/models/users");
+const { createHash, isValidPassword } = require("../utils");
 const UserDTO = require("../dao/DTOs/UserDTO");
 const CustomError = require("../utils/errorHandling/customError");
-const { UserErrorInfo } = require("../utils/errorHandling/info");
 const ErrorTypes = require("../utils/errorHandling/errorTypes");
+const MailingService = require("../services/mailing.service");
+const jwt = require("jsonwebtoken");
+const jwtSecret = "coderhouse";
+const { usersService } = require("../repositories");
+
+const mailingService = new MailingService();
 
 class SessionController {
   static async register(req, res) {
@@ -70,29 +74,56 @@ class SessionController {
   }
 
   static async resetPassword(req, res) {
-    const { email, password } = req.body;
+    try {
+      const { email } = req.body;
+      let user = await usersService.getByProperty("email", email);
+      const passwordResetToken = jwt.sign(user, jwtSecret, { expiresIn: "1h" });
 
-    if (!email || !password) {
-      return res.status(400).send({ status: "error", error: "Missing data" });
+      await mailingService.sendPasswordResetMail(
+        user,
+        email,
+        passwordResetToken
+      );
+      res.send({ payload: user });
+    } catch (error) {
+      res.status(500).send({ status: "error", error: error.message });
     }
-    const result = await userModel.findOne({ email });
+  }
 
-    if (!result) {
-      return res.status(401).send({
-        status: "error",
-        error: "Wrong email",
+  static async verifyToken(req, res) {
+    const { passwordResetToken } = req.params;
+    try {
+      jwt.verify(passwordResetToken, jwtSecret, (error) => {
+        if (error) {
+          return res.redirect("/resetPassword");
+        } else {
+          return res.redirect("/changePassword");
+        }
       });
+    } catch (error) {
+      res.status(500).send({ status: "error", error: error.message });
     }
-    const hashedPassword = createHash(password);
-    const updatedUser = await userModel.updateOne(
-      { _id: result._id },
-      { $set: { password: hashedPassword } }
-    );
-    res.send({
-      status: "success",
-      message: "User password updated successfully",
-      details: updatedUser,
-    });
+  }
+
+  static async changePassword(req, res) {
+    try {
+      const { email, password } = req.body;
+      let user = await usersService.getByProperty("email", email);
+      if (isValidPassword(user, password)) {
+        return res.status(400).send({
+          status: "error",
+          message: "Same password",
+        });
+      } else {
+        user.password = password;
+        await usersService.update(user._id.toString(), {
+          $set: { password: createHash(user.password) },
+        });
+        res.send({ status: "success" });
+      }
+    } catch (error) {
+      res.status(500).send({ status: "error", error: error.message });
+    }
   }
 
   static async github(req, res) {}
