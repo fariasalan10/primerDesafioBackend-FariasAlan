@@ -13,6 +13,7 @@ const productsRouter = require("./routes/products.router");
 const cartsRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
 const sessionRouter = require("./routes/sessions.router");
+const usersRouter = require("./routes/users.router");
 const { mockRouter } = require("./routes/mock.router");
 const { loggerTestRouter } = require("./routes/loggerTest.router");
 
@@ -63,6 +64,7 @@ server.use("/", viewsRouter);
 server.use("/api/sessions", sessionRouter);
 server.use("/api/mock", mockRouter);
 server.use("/api/logger", loggerTestRouter);
+server.use("/api/users", usersRouter);
 
 const serverHttp = server.listen(port, () => {
   console.log(`Server listening on port ${port}`);

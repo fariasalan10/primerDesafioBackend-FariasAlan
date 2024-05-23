@@ -43,6 +43,15 @@ class CartsController {
       const product = await productsService.getById(productId);
 
       if (product) {
+        const product = await productsService.getById(productId);
+        if (req.user.role == "premium" && req.user.email == product.owner) {
+          throw new CustomError({
+            name: "Cannot add a product",
+            cause: "Cannot add a product that is yours",
+            message: "Cannot add a product that is yours",
+            code: ErrorTypes.NOT_FOUND,
+          });
+        }
         await cartsService.addProduct(cartId, productId);
         res.send({ status: "success", message: "Product added to cart" });
       } else {

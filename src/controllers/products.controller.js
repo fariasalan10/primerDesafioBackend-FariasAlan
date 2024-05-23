@@ -96,6 +96,16 @@ class ProductsController {
 
   static async deleteProduct(req, res, next) {
     try {
+      const id = req.params.pid;
+      const product = await productsService.getById(id);
+      if (req.user.role == "premium" && req.user.email != product.owner) {
+        throw new CustomError({
+          name: "Cannot delete a product",
+          cause: "Cannot delete a product that is not yours",
+          message: "Cannot delete a product that is not yours",
+          code: ErrorTypes.NOT_FOUND,
+        });
+      }
       const deleted = await productsService.delete(req.params.pid);
       if (deleted) {
         res.status(200).json({ status: "success", message: "Product deleted" });
