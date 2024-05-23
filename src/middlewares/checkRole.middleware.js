@@ -1,10 +1,15 @@
-const checkRole = (role) => (req, res, next) => {
+const checkRole = (roles) => (req, res, next) => {
   const user = req.session.user;
 
-  if (user.role != role) {
+  if (!roles.includes(user.role)) {
     return res
       .status(403)
-      .send({ status: "error", error: `Unauthorized. You are not a ${role}` });
+      .send({
+        status: "error",
+        error: `Unauthorized. You need one of the following roles: ${roles.join(
+          ", "
+        )}`,
+      });
   }
 
   next();

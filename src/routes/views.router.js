@@ -23,11 +23,11 @@ router.get("/", ViewsController.getHome);
 
 router.get(
   "/realtimeproducts",
-  checkRole("usuario"),
+  checkRole(["usuario"]),
   ViewsController.getRealTimeProducts
 );
 
-router.get("/chat", checkRole("usuario"), ViewsController.getChat);
+router.get("/chat", checkRole(["usuario"]), ViewsController.getChat);
 
 router.get("/products", ViewsController.getProducts);
 

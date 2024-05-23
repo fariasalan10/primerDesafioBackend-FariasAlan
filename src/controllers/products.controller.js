@@ -62,6 +62,11 @@ class ProductsController {
           code: ErrorTypes.INVALID_PARAMETERS,
         });
       }
+
+      if (req.user.role == "premium") {
+        req.body.owner = req.user.email;
+      }
+
       await productsService.create(req.body);
       res.status(201).json({ status: "success", message: "Product created" });
     } catch (error) {

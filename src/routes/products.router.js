@@ -7,10 +7,14 @@ router.get("/", ProductsController.getAll);
 
 router.get("/:pid", ProductsController.getById);
 
-router.post("/", checkRole("admin"), ProductsController.addProduct);
+router.post(
+  "/",
+  checkRole(["admin", "premium"]),
+  ProductsController.addProduct
+);
 
-router.put("/:pid", checkRole("admin"), ProductsController.updateProduct);
+router.put("/:pid", checkRole(["admin"]), ProductsController.updateProduct);
 
-router.delete("/:pid", checkRole("admin"), ProductsController.deleteProduct);
+router.delete("/:pid", checkRole(["admin"]), ProductsController.deleteProduct);
 
 module.exports = router;
