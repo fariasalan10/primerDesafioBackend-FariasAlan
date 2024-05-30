@@ -1,0 +1,219 @@
+paths:
+  /api/carts:
+    post:
+      summary: "Create cart"
+      description: "Create cart"
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Carts"
+      responses:
+        200:
+          description: "Cart created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        400:
+          description: "Bad request"
+  /api/carts/{id}:
+    get:
+      summary: "Get cart"
+      description: "Get cart by id"
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Cart found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        404:
+          description: "Cart not found"
+    put:
+      summary: "Update cart"
+      description: "Update cart"
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Carts"
+      responses:
+        200:
+          description: "Cart updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        400:
+          description: "Bad request"
+    delete:
+      summary: "Delete cart"
+      description: "Delete cart"
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Cart deleted"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        400:
+          description: "Bad request"
+  /api/carts/{id}/product/{pid}:
+    post:
+      summary: "Add product to cart"
+      description: "Add product to specific cart"
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Product added to cart"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        400:
+          description: "Bad request"
+    delete:
+      summary: "Delete product from cart"
+      description: "Delete product from specific cart"
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Product deleted from cart"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        400:
+          description: "Bad request"
+    put:
+      summary: "Update quantity of product in cart"
+      description: "Update quantity of product in specific cart"
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Carts"
+      responses:
+        200:
+          description: "Product quantity updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        400:
+          description: "Bad request"
+  /api/carts/{id}/purchase:
+    get:
+      summary: "Purchase cart"
+      description: "Purchase cart"
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Cart purchased"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        400:
+          description: "Bad request"
+
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The id of the cart autogenerated by the database
+          example: "663a4c3400b191e6de2eb8e4"
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: The id of the product
+                example: "6631a3b629720da70a1120c3"
+              quantity:
+                type: number
+                description: The quantity of the product
+                example: 1
+              _id:
+                type: string
+                description: The id of the product
+                example: "663a4c3400b191e6de2eb8e4"

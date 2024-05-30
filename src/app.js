@@ -13,7 +13,7 @@ const productsRouter = require("./routes/products.router");
 const cartsRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
 const sessionRouter = require("./routes/sessions.router");
-const usersRouter = require("./routes/users.router");
+const { usersRouter } = require("./routes/users.router");
 const { mockRouter } = require("./routes/mock.router");
 const { loggerTestRouter } = require("./routes/loggerTest.router");
 
@@ -22,6 +22,8 @@ const { mongoConnectionLink, sessionSecret } = require("./config/config");
 const errorHandler = require("./middlewares/errorHandling.middleware");
 const checkRole = require("./middlewares/checkRole.middleware");
 const addLogger = require("./middlewares/addLogger.middleware");
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUiExpress = require("swagger-ui-express");
 const port = 8080;
 
 const server = express();
@@ -56,6 +58,22 @@ server.use(passport.initialize());
 server.use(passport.session());
 
 server.use(addLogger);
+
+//Swagger-Documentation
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Ecommerce API",
+      version: "1.0.0",
+      description: "Ecommerce API Information",
+    },
+  },
+  apis: ["./src/docs/**/*.yaml"],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+server.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 //Routers
 server.use("/api/products", productsRouter);
