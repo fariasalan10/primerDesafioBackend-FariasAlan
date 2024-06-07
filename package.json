@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --ignore src/files src/app -p MONGO",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha src/test --recursive"
   },
   "keywords": [],
   "author": "",
@@ -35,5 +35,10 @@
     "swagger-ui-express": "^5.0.0",
     "sweetalert": "^2.1.2",
     "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0",
+    "supertest": "^7.0.0"
   }
 }

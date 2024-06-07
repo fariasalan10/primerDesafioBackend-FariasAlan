@@ -7,8 +7,8 @@ const { idErrorInfo } = require("../utils/errorHandling/info");
 class CartsController {
   static async create(req, res) {
     try {
-      await cartsService.create();
-      res.send({ status: "success" });
+      const cart = await cartsService.create();
+      res.send({ status: "success", payload: cart });
     } catch (error) {
       console.error("Error al crear carrito:", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -52,8 +52,12 @@ class CartsController {
             code: ErrorTypes.NOT_FOUND,
           });
         }
-        await cartsService.addProduct(cartId, productId);
-        res.send({ status: "success", message: "Product added to cart" });
+        const updatedCart = await cartsService.addProduct(cartId, productId);
+        res.send({
+          status: "success",
+          message: "Product added to cart",
+          payload: updatedCart,
+        });
       } else {
         throw new CustomError({
           name: "Product not found",

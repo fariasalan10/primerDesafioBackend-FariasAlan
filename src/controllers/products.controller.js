@@ -67,8 +67,14 @@ class ProductsController {
         req.body.owner = req.user.email;
       }
 
-      await productsService.create(req.body);
-      res.status(201).json({ status: "success", message: "Product created" });
+      const product = await productsService.create(req.body);
+      res
+        .status(201)
+        .json({
+          status: "success",
+          message: "Product created",
+          payload: product,
+        });
     } catch (error) {
       next(error);
     }
