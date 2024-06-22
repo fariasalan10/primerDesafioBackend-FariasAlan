@@ -13,18 +13,7 @@ class UsersController {
   static async changeRole(req, res) {
     const { userId } = req.params;
     try {
-      const user = await usersService.getById(userId);
-      if (!["user", "premium"].includes(user.role)) {
-        throw new Error("Invalid role");
-      }
-      if (user.role === "user") {
-        user.role = "premium";
-      } else {
-        user.role = "user";
-      }
-      await usersService.update(user._id.toString(), {
-        $set: { role: user.role },
-      });
+      await usersService.changeRole(userId);
       res.send({ status: "success", message: "User updated" });
     } catch (error) {
       res.status(500).send({ status: "error", error: error.message });

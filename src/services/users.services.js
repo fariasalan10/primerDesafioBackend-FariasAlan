@@ -59,6 +59,48 @@ class UsersService {
       profile_picture: file.path.split("public")[1].replace(/\\/g, "/"),
     });
   }
+
+  async changeRole(userId) {
+    const user = await this.getById(userId);
+
+    const requiredDocuments = [
+      "Identificacion",
+      "Comprobante de domicilio",
+      "Comprobante de estado de cuenta",
+    ];
+
+    if (user.role === "usuario") {
+      if (!user.documents.some((d) => d.name.includes("Identificacion"))) {
+        throw new Error("Missing required document: Identificacion");
+      }
+      if (
+        !user.documents.some((d) => d.name.includes("Comprobante de domicilio"))
+      ) {
+        throw new Error("Missing required document: Comprobante de domicilio");
+      }
+      if (
+        !user.documents.some((d) =>
+          d.name.includes("Comprobante de estado de cuenta")
+        )
+      ) {
+        throw new Error(
+          "Missing required document: Comprobante de estado de cuenta"
+        );
+      }
+    }
+
+    if (!["usuario", "premium"].includes(user.role)) {
+      throw new Error("Invalid role");
+    }
+    if (user.role === "usuario") {
+      user.role = "premium";
+    } else {
+      user.role = "usuario";
+    }
+    await this.update(user._id.toString(), {
+      $set: { role: user.role },
+    });
+  }
 }
 
 module.exports = UsersService;
