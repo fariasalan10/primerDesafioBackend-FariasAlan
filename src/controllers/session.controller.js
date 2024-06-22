@@ -47,6 +47,8 @@ class SessionController {
       cart: user.cart,
     };
 
+    await usersService.setLastConnection(user._id);
+
     res.send({
       status: "success",
       message: "User logged in successfully",
@@ -70,6 +72,8 @@ class SessionController {
         });
       }
     });
+    await usersService.setLastConnection(user._id);
+
     res.redirect("/login");
   }
 
