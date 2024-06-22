@@ -38,6 +38,27 @@ class UsersService {
     await this.update(id, { last_connection: new Date().toLocaleString() });
     return user;
   }
+
+  async addDocument(id, files) {
+    const user = await this.dao.getById(id);
+    let documents = user.documents || [];
+    documents = [
+      ...documents,
+      ...files.map((file) => {
+        return {
+          name: file.originalname,
+          reference: file.path.split("public")[1].replace(/\\/g, "/"),
+        };
+      }),
+    ];
+    return await this.update(id, { documents: documents });
+  }
+  async uploadProfilePicture(id, file) {
+    await this.dao.getById(id);
+    return await this.update(id, {
+      profile_picture: file.path.split("public")[1].replace(/\\/g, "/"),
+    });
+  }
 }
 
 module.exports = UsersService;
