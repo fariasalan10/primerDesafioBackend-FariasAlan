@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
-const { Command } = require("commander");
 
-dotenv.config();
+config = dotenv.config();
+const { Command } = require("commander");
 
 const program = new Command();
 program.option(

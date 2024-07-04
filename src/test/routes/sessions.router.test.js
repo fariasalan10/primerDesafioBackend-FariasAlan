@@ -1,16 +1,13 @@
 const chai = import("chai");
 const supertest = require("supertest");
 const mongoose = require("mongoose");
+const { mongoConnectionLink } = require("../../config/config");
 
 const request = supertest("http://localhost:8080");
 
-mongoose
-  .connect(
-    "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce"
-  )
-  .then(() => {
-    console.log("MongoDB connected to test sessions router");
-  });
+mongoose.connect(mongoConnectionLink).then(() => {
+  console.log("MongoDB connected to test sessions router");
+});
 
 describe("/api/sessions Test", () => {
   before(async () => {

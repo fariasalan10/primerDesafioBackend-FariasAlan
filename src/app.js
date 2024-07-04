@@ -18,13 +18,11 @@ const { mockRouter } = require("./routes/mock.router");
 const { loggerTestRouter } = require("./routes/loggerTest.router");
 
 const messageModel = require("./dao/models/messages");
-const { mongoConnectionLink, sessionSecret } = require("./config/config");
+const { mongoConnectionLink, port, sessionSecret } = require("./config/config");
 const errorHandler = require("./middlewares/errorHandling.middleware");
-const checkRole = require("./middlewares/checkRole.middleware");
 const addLogger = require("./middlewares/addLogger.middleware");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUiExpress = require("swagger-ui-express");
-const port = 8080;
 
 const server = express();
 
@@ -42,11 +40,10 @@ server.use(express.json());
 server.use(
   session({
     store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://fariasalan:Yy0i1kxIkMb8Ywdn@coderhousecluster.n7taqlj.mongodb.net/ecommerce",
+      mongoUrl: mongoConnectionLink,
       ttl: 600,
     }),
-    secret: "coderhouse",
+    secret: sessionSecret,
     resave: false,
     saveUninitialized: true,
   })

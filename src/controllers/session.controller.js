@@ -4,8 +4,9 @@ const CustomError = require("../utils/errorHandling/customError");
 const ErrorTypes = require("../utils/errorHandling/errorTypes");
 const MailingService = require("../services/mailing.service");
 const jwt = require("jsonwebtoken");
-const jwtSecret = "coderhouse";
+
 const { usersService } = require("../repositories");
+const { jwtSecret } = require("../config/config");
 
 const mailingService = new MailingService();
 
