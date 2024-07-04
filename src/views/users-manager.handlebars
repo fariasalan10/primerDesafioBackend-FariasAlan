@@ -1,0 +1,49 @@
+<h1>USERS MANAGER</h1>
+
+{{#each users}}
+  <div
+    style="background-color: lightblue; margin: 10px; border-radius: 10px; padding : 10px; border: 1px solid black; display: flex; flex-direction: column ; align-items: center"
+  >
+    <p>Id: {{this._id}}</p>
+    <p>Name: {{this.first_name}} {{this.last_name}}</p>
+    <p>Email: {{this.email}}</p>
+    <p>Age: {{this.age}}</p>
+    <p>Role: {{this.role}}</p>
+    <select name="role" id="select-{{this._id}}">
+      {{#if this.isUser}}
+        <option value="usuario" selected>usuario</option>{{else}}
+        <option value="usuario">usuario</option>
+      {{/if}}
+      {{#if this.isPremium}}
+        <option value="premium" selected>premium</option>{{else}}
+        <option value="premium">premium</option>
+      {{/if}}
+      {{#if this.isAdmin}} <option value="admin" selected>admin</option>{{else}}
+        <option value="admin">admin</option>
+      {{/if}}
+    </select>
+
+    <div
+      style=" display: flex; flex-direction: row ; align-items: center; margin: 10px "
+    >
+      <button onclick="updateRole('{{this._id}}')">Update Role</button>
+
+      <button
+        style="background-color: red ; margin-left: 10px"
+        onclick="deleteUser('{{this._id}}')"
+      >Delete User</button></div>
+
+  </div>
+{{/each}}
+
+<script>
+  function updateRole(id){ const newRole =
+  document.getElementById(`select-${id}`).value;
+  fetch(`http://localhost:8080/api/users/${id}`, { method:'PUT', body:
+  JSON.stringify({role:newRole}), headers:{ 'Content-Type': 'application/json' }
+  }).then((res)=>{ if(res.status == 200){ window.location.reload(); } }) }
+  function deleteUser(id){ fetch(`http://localhost:8080/api/users/${id}`, {
+  method:'DELETE' }).then((res)=>{ if(res.status == 200){
+  window.location.reload(); } }) }
+
+</script>

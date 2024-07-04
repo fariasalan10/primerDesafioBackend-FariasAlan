@@ -72,7 +72,7 @@ class SessionController {
         });
       }
     });
-    await usersService.setLastConnection(user._id);
+    await usersService.setLastConnection(req.user._id);
 
     res.redirect("/login");
   }

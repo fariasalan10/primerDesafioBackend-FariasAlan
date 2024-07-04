@@ -43,4 +43,11 @@ router.get("/resetPassword", ViewsController.getResetPassword);
 
 router.get("/changePassword", ViewsController.getChangePassword);
 
+router.get(
+  "/users-manager",
+  checkRole(["admin"], ViewsController.getUsersManager)
+);
+
+router.get("/purchase-success", ViewsController.getPurchaseSuccess);
+
 module.exports = router;

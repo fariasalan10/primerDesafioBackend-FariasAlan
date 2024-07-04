@@ -1,4 +1,8 @@
-const { productsService, cartsService } = require("../repositories");
+const {
+  productsService,
+  cartsService,
+  usersService,
+} = require("../repositories");
 const CustomError = require("../utils/errorHandling/customError");
 const ErrorTypes = require("../utils/errorHandling/errorTypes");
 const { idErrorInfo } = require("../utils/errorHandling/info");
@@ -118,6 +122,34 @@ class ViewsController {
   static async getChangePassword(req, res) {
     res.render("changePassword", {});
   }
-}
 
+  static async getUsersManager(req, res) {
+    try {
+      const users = await usersService.getAll();
+
+      const usersWithRoleFlags = users.map((user) => {
+        user.isUser = user.role == "usuario";
+        user.isPremium = user.role == "premium";
+        user.isAdmin = user.role == "admin";
+        return user;
+      });
+
+      res.render("users-manager", { users: users });
+    } catch (error) {
+      res
+        .status(error.status || 500)
+        .send({ status: "error", error: error.message });
+    }
+  }
+
+  static async getPurchaseSuccess(req, res) {
+    try {
+      res.render("purchase-success", {});
+    } catch (error) {
+      res
+        .status(error.status || 500)
+        .send({ status: "error", error: error.message });
+    }
+  }
+}
 module.exports = ViewsController;

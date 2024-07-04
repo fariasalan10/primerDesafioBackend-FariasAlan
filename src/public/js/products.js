@@ -13,7 +13,8 @@ const purchaseCart = (cartId) => {
     method: "GET",
   }).then((res) => {
     if (res.status == 200) {
-      window.location.reload();
+      // window.location.reload();
+      window.location.href = "/purchase-success";
     }
   });
 };

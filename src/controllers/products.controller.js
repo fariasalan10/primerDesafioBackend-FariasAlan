@@ -1,7 +1,9 @@
 const { productsService } = require("../repositories");
+const MailingService = require("../services/mailing.service");
 const CustomError = require("../utils/errorHandling/customError");
 const ErrorTypes = require("../utils/errorHandling/errorTypes");
 const { idErrorInfo } = require("../utils/errorHandling/info");
+const mailingService = new MailingService();
 
 class ProductsController {
   static async getAll(req, res, next) {
@@ -68,13 +70,11 @@ class ProductsController {
       }
 
       const product = await productsService.create(req.body);
-      res
-        .status(201)
-        .json({
-          status: "success",
-          message: "Product created",
-          payload: product,
-        });
+      res.status(201).json({
+        status: "success",
+        message: "Product created",
+        payload: product,
+      });
     } catch (error) {
       next(error);
     }
@@ -112,6 +112,13 @@ class ProductsController {
           code: ErrorTypes.NOT_FOUND,
         });
       }
+      if (product.owner && product.owner != "admin") {
+        await mailingService.sendDeletedPremiumProductMail(
+          product.owner,
+          product.title
+        );
+      }
+
       const deleted = await productsService.delete(req.params.pid);
       if (deleted) {
         res.status(200).json({ status: "success", message: "Product deleted" });

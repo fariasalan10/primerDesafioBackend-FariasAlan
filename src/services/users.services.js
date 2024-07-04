@@ -1,3 +1,7 @@
+const MailingService = require("./mailing.service");
+
+const mailingService = new MailingService();
+
 class UsersService {
   constructor(dao) {
     this.dao = dao;
@@ -35,7 +39,7 @@ class UsersService {
 
   async setLastConnection(id) {
     const user = await this.dao.getById(id);
-    await this.update(id, { last_connection: new Date().toLocaleString() });
+    await this.update(id, { last_connection: new Date() });
     return user;
   }
 
@@ -100,6 +104,33 @@ class UsersService {
     await this.update(user._id.toString(), {
       $set: { role: user.role },
     });
+  }
+
+  async deleteUnactive() {
+    const users = await this.dao.getAll();
+    const now = new Date();
+    let deleted = 0;
+    const TOLERANCE = 1;
+    for (const user of users) {
+      if (user.last_connection) {
+        if (this.getMinutesDiff(now, user.last_connection) > TOLERANCE) {
+          await this.delete(user._id);
+          await mailingService.sendDeletedAccountMail(
+            user.first_name,
+            user.email
+          );
+          deleted++;
+        }
+      }
+    }
+    return deleted;
+  }
+
+  getMinutesDiff(now, last_connection) {
+    let diff = now - last_connection;
+    let minutes = diff / 1000 / 60;
+    console.log(minutes);
+    return minutes;
   }
 }
 
