@@ -28,3 +28,8 @@ const deleteFromCart = (cartId, productId) => {
     }
   });
 };
+
+const botonCarrito = document.getElementById("ocultar__h1");
+botonCarrito.addEventListener("click", (event) => {
+  document.querySelector("section").classList.toggle("ocultar");
+});

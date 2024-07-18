@@ -13,7 +13,11 @@ class ViewsController {
     try {
       const products = await productsService.getAll();
       const cart = await cartsService.getById(req.user.cart);
-      res.render("products", { products, cart, user: req.session.user });
+      res.render("inicio", {
+        products,
+        cart,
+        user: req.session.user,
+      });
     } catch (error) {
       res
         .status(error.status || 500)
