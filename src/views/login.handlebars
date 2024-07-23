@@ -1,18 +1,164 @@
-<div>
-    <h1>Login</h1>
-    <form id="loginForm">
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Email" />
-        <br />
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/login.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
 
-        <label for="password">Password</label>
-        <input type="password" name="password" placeholder="Password" />
-        <br />
+  <body>
 
-        <button type="submit">Login</button>
-        <a href="/api/sessions/github">Login con Github</a>
-        <a href="/register">¡Registrate en la web aquí!</a>
-        <a href="/resetPassword">¿Olvidaste tu contraseña?</a>
-</div>
+    <div class="form-container">
 
-<script src="js/login.js"></script>
+      <div class="col col-1">
+        <div class="image-layer">
+          <img
+            src="/assets/white-outline.png"
+            alt="wihte-outline"
+            class="form-image-main"
+          />
+          <img src="/assets/dots.png" alt="dots" class="form-image dots" />
+          <img src="/assets/coin.png" alt="coin" class="form-image coin" />
+          <img
+            src="/assets/spring.png"
+            alt="spring"
+            class="form-image spring"
+          />
+          <img
+            src="/assets/rocket.png"
+            alt="rocket"
+            class="form-image rocket"
+          />
+          <img src="/assets/cloud.png" alt="cloud" class="form-image cloud" />
+
+        </div>
+
+        <p class="featured-words">Lorem ipsum dolor, sit amet consectetur
+          adipisicing elit. Exercitationem, adipisci minima. Commodi corporis
+          cum tenetur
+          <span>ipsam nisi?</span></p>
+      </div>
+
+      <form class="col col-2" id="loginForm">
+
+        <div class="btn-box">
+          <button class="btn btn-1" id="login">Sign In</button>
+          <button class="btn btn-2" id="register">Sign Up</button>
+        </div>
+
+        <div class="login-form">
+
+          <div class="form-title">
+            <span>Sign In</span>
+          </div>
+
+          <div class="form-inputs">
+
+            <div class="input-box">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                class="input-field"
+                required
+              />
+              <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input-box">
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="input-field"
+                required
+              />
+              <i class="bx bx-lock-alt icon"></i>
+            </div>
+
+            <div class="forgot-pass">
+              <a href="/resetPassword">Forgot Password?</a></div>
+
+            <div class="input-box">
+              <button class="input-submit" type="submit">
+                <span>Sign In</span>
+                <i class="bx bx-right-arrow-alt"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <div class="social-login">
+
+            <a href="./api/sessions/github"><i class="bx bxl-github"></i></a>
+            <i class="bx bxl-google"></i>
+            <i class="bx bxl-facebook"></i>
+            <i class="bx bxl-twitter"></i>
+
+          </div>
+
+        </div>
+
+        {{! <div class="register-form">
+
+          <div class="form-title">
+            <span>Sign Up</span>
+          </div>
+
+          <div class="form-inputs">
+
+            <div class="input-box">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                class="input-field"
+                required
+              />
+              <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input-box">
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="input-field"
+                required
+              />
+              <i class="bx bx-lock-alt icon"></i>
+            </div>
+
+            <div class="forgot-pass"> <a href="#">Forgot Password?</a></div>
+
+            <div class="input-box">
+              <button class="input-submit">
+                <span>Sign Up</span>
+                <i class="bx bx-right-arrow-alt"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <div class="social-login">
+
+            <i class="bx bxl-github"></i>
+            <i class="bx bxl-google"></i>
+            <i class="bx bxl-facebook"></i>
+            <i class="bx bxl-twitter"></i>
+
+          </div>
+
+        </div> }}
+
+      </form>
+      <script src="js/login.js"></script>
+
+    </div>
+
+  </body>
+
+</html>
