@@ -25,6 +25,7 @@ body {
   border: 3px solid rgba(255, 255, 255, 0.5);
   border-radius: 30px;
   backdrop-filter: blur(20px);
+  overflow: hidden;
 }
 
 .col-1 {
@@ -45,12 +46,60 @@ body {
 
 .form-image-main {
   width: 400px;
+  animation: scale-up 3s ease-in-out infinite;
 }
 
 .form-image {
   position: absolute;
   left: 0;
   width: 400px;
+}
+
+.coin {
+  animation: scale-down 3s ease-in-out alternate infinite;
+}
+
+.spring {
+  animation: scale-down 3s ease-in-out alternate infinite;
+}
+
+.dots {
+  animation: scale-up 3s ease-in-out alternate infinite;
+}
+
+.rocket {
+  animation: up-down 3s ease-in-out alternate infinite;
+}
+.cloud {
+  animation: left-right 3s ease-in-out alternate infinite;
+}
+
+.stars {
+  animation: scale-down 3s ease-in-out alternate infinite;
+}
+
+@keyframes left-right {
+  to {
+    transform: translateX(10px);
+  }
+}
+
+@keyframes up-down {
+  to {
+    transform: translateY(10px);
+  }
+}
+
+@keyframes scale-down {
+  to {
+    transform: scale(0.95);
+  }
+}
+
+@keyframes scale-up {
+  to {
+    transform: scale(1.05);
+  }
 }
 
 .featured-words {
@@ -68,6 +117,7 @@ body {
   position: relative;
   width: 45%;
   padding: 20px;
+  overflow: hidden;
 }
 
 .btn-box {
@@ -82,7 +132,7 @@ body {
   padding: 5px 30px;
   border: none;
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
   color: white;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
@@ -98,12 +148,31 @@ body {
 }
 
 .login-form {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   padding: 0 4vw;
   transition: 0.3s;
+}
+
+.register-form {
+  position: absolute;
+  left: -50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 4vw;
+  transition: 0.3s;
+}
+
+.register-form .form-title {
+  margin-block: 40px 20px;
 }
 
 .form-title {
@@ -213,4 +282,16 @@ body {
 
 .social-login i:hover {
   transform: scale(1.1);
+}
+
+@media (max-width: 892px) {
+  .form-container {
+    width: 400px;
+  }
+  .col-1 {
+    display: none;
+  }
+  .col-2 {
+    width: 100%;
+  }
 }

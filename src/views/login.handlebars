@@ -42,14 +42,14 @@
           <span>ipsam nisi?</span></p>
       </div>
 
-      <form class="col col-2" id="loginForm">
+      <div class="col col-2">
 
         <div class="btn-box">
           <button class="btn btn-1" id="login">Sign In</button>
           <button class="btn btn-2" id="register">Sign Up</button>
         </div>
 
-        <div class="login-form">
+        <form class="login-form" id="loginForm">
 
           <div class="form-title">
             <span>Sign In</span>
@@ -63,7 +63,6 @@
                 name="email"
                 placeholder="Email"
                 class="input-field"
-                required
               />
               <i class="bx bx-user icon"></i>
             </div>
@@ -74,7 +73,6 @@
                 name="password"
                 placeholder="Password"
                 class="input-field"
-                required
               />
               <i class="bx bx-lock-alt icon"></i>
             </div>
@@ -93,19 +91,19 @@
 
           <div class="social-login">
 
-            <a href="./api/sessions/github"><i class="bx bxl-github"></i></a>
+            <a href="api/sessions/github"><i class="bx bxl-github"></i></a>
             <i class="bx bxl-google"></i>
             <i class="bx bxl-facebook"></i>
             <i class="bx bxl-twitter"></i>
 
           </div>
 
-        </div>
+        </form>
 
-        {{! <div class="register-form">
+        <div class="register-form">
 
           <div class="form-title">
-            <span>Sign Up</span>
+            <span>Create Account</span>
           </div>
 
           <div class="form-inputs">
@@ -116,9 +114,8 @@
                 name="email"
                 placeholder="Email"
                 class="input-field"
-                required
               />
-              <i class="bx bx-user icon"></i>
+              <i class="bx bx-envelope icon"></i>
             </div>
 
             <div class="input-box">
@@ -127,7 +124,6 @@
                 name="password"
                 placeholder="Password"
                 class="input-field"
-                required
               />
               <i class="bx bx-lock-alt icon"></i>
             </div>
@@ -152,9 +148,9 @@
 
           </div>
 
-        </div> }}
+        </div>
 
-      </form>
+      </div>
       <script src="js/login.js"></script>
 
     </div>
