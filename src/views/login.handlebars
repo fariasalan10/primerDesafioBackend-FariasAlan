@@ -91,7 +91,7 @@
 
           <div class="social-login">
 
-            <a href="api/sessions/github"><i class="bx bxl-github"></i></a>
+            <a href="/api/sessions/github"><i class="bx bxl-github"></i></a>
             <i class="bx bxl-google"></i>
             <i class="bx bxl-facebook"></i>
             <i class="bx bxl-twitter"></i>
@@ -100,13 +100,33 @@
 
         </form>
 
-        <div class="register-form">
+        <form class="register-form" id="registerForm">
 
           <div class="form-title">
             <span>Create Account</span>
           </div>
 
           <div class="form-inputs">
+
+            <div class="input-box">
+              <input
+                type="text"
+                name="first_name"
+                placeholder="First Name"
+                class="input-field"
+              />
+              <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input-box">
+              <input
+                type="text"
+                name="last_name"
+                placeholder="Last Name"
+                class="input-field"
+              />
+              <i class="bx bx-user icon"></i>
+            </div>
 
             <div class="input-box">
               <input
@@ -120,6 +140,16 @@
 
             <div class="input-box">
               <input
+                type="number"
+                name="age"
+                placeholder="Age"
+                class="input-field"
+              />
+              <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input-box">
+              <input
                 type="password"
                 name="password"
                 placeholder="Password"
@@ -127,8 +157,6 @@
               />
               <i class="bx bx-lock-alt icon"></i>
             </div>
-
-            <div class="forgot-pass"> <a href="#">Forgot Password?</a></div>
 
             <div class="input-box">
               <button class="input-submit">
@@ -139,19 +167,12 @@
 
           </div>
 
-          <div class="social-login">
-
-            <i class="bx bxl-github"></i>
-            <i class="bx bxl-google"></i>
-            <i class="bx bxl-facebook"></i>
-            <i class="bx bxl-twitter"></i>
-
-          </div>
-
-        </div>
+        </form>
 
       </div>
+
       <script src="js/login.js"></script>
+      <script src="js/register.js"></script>
 
     </div>
 

@@ -1,27 +1,181 @@
-<div>
-    <h1>Register</h1>
-    <form id="registerForm">
-        <label for="first_name">First Name</label>
-        <input type="text" name="first_name" placeholder="First Name" />
-        <br />
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/register.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
 
-        <label for="last_name">Last Name</label>
-        <input type="text" name="last_name" placeholder="Last Name" />
-        <br />
+  <body>
 
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Email" />
-        <br />
+    <div class="form-container">
 
-        <label for="age">Age</label>
-        <input type="number" name="age" placeholder="Age" />
-        <br />
+      <div class="col col-1">
+        <div class="image-layer">
+          <img
+            src="/assets/white-outline.png"
+            alt="wihte-outline"
+            class="form-image-main"
+          />
+          <img src="/assets/dots.png" alt="dots" class="form-image dots" />
+          <img src="/assets/coin.png" alt="coin" class="form-image coin" />
+          <img
+            src="/assets/spring.png"
+            alt="spring"
+            class="form-image spring"
+          />
+          <img
+            src="/assets/rocket.png"
+            alt="rocket"
+            class="form-image rocket"
+          />
+          <img src="/assets/cloud.png" alt="cloud" class="form-image cloud" />
 
-        <label for="password">Password</label>
-        <input type="password" name="password" placeholder="Password" />
-        <br />
+        </div>
 
-        <button type="submit">Register</button>
-</div>
+        <p class="featured-words">Lorem ipsum dolor, sit amet consectetur
+          adipisicing elit. Exercitationem, adipisci minima. Commodi corporis
+          cum tenetur
+          <span>ipsam nisi?</span></p>
+      </div>
 
-<script src="js/register.js"></script>
+      <div class="col col-2">
+
+        <div class="btn-box">
+          <button class="btn btn-2" id="login">Sign In</button>
+          <button class="btn btn-1" id="register">Sign Up</button>
+        </div>
+
+        <form class="register-form" id="registerForm">
+
+          <div class="form-title">
+            <span>Create Account</span>
+          </div>
+
+          <div class="form-inputs">
+
+            <div class="input-box">
+              <input
+                type="text"
+                name="first_name"
+                placeholder="First Name"
+                class="input-field"
+              />
+              <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input-box">
+              <input
+                type="text"
+                name="last_name"
+                placeholder="Last Name"
+                class="input-field"
+              />
+              <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input-box">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                class="input-field"
+              />
+              <i class="bx bx-envelope icon"></i>
+            </div>
+
+            <div class="input-box">
+              <input
+                type="number"
+                name="age"
+                placeholder="Age"
+                class="input-field"
+              />
+              <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input-box">
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="input-field"
+              />
+              <i class="bx bx-lock-alt icon"></i>
+            </div>
+
+            <div class="input-box">
+              <button class="input-submit">
+                <span>Sign Up</span>
+                <i class="bx bx-right-arrow-alt"></i>
+              </button>
+            </div>
+
+          </div>
+
+        </form>
+
+        <form class="login-form" id="loginForm">
+
+          <div class="form-title">
+            <span>Sign In</span>
+          </div>
+
+          <div class="form-inputs">
+
+            <div class="input-box">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                class="input-field"
+              />
+              <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input-box">
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                class="input-field"
+              />
+              <i class="bx bx-lock-alt icon"></i>
+            </div>
+
+            <div class="forgot-pass">
+              <a href="/resetPassword">Forgot Password?</a></div>
+
+            <div class="input-box">
+              <button class="input-submit" type="submit">
+                <span>Sign In</span>
+                <i class="bx bx-right-arrow-alt"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <div class="social-login">
+
+            <a href="/api/sessions/github"><i class="bx bxl-github"></i></a>
+            <i class="bx bxl-google"></i>
+            <i class="bx bxl-facebook"></i>
+            <i class="bx bxl-twitter"></i>
+
+          </div>
+
+        </form>
+
+      </div>
+
+      <script src="js/login.js"></script>
+      <script src="js/register.js"></script>
+
+    </div>
+
+  </body>
+
+</html>
