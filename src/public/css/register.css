@@ -259,6 +259,14 @@ body {
   gap: 15px;
 }
 
+#login-error-message {
+  color: rgb(129, 0, 0);
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 10px;
+  opacity: 0;
+}
+
 .social-login {
   display: flex;
   gap: 20px;

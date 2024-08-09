@@ -1,4 +1,5 @@
 const loginForm = document.getElementById("loginForm");
+const errorLogin = document.getElementById("login-error-message");
 
 loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -13,12 +14,10 @@ loginForm.addEventListener("submit", (event) => {
     body: JSON.stringify(obj),
   }).then((res) => {
     if (res.status == 200) {
-      alert("¡Bienvenido!");
+      errorLogin.style.opacity = "0";
       window.location.replace("/");
     } else {
-      alert(
-        "Clave o Email incorrectos, intenta nuevamente. Si no estás registrado, ¡regístrate!"
-      );
+      errorLogin.style.opacity = "1";
     }
   });
 });

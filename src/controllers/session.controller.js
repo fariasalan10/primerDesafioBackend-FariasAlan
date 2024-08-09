@@ -89,7 +89,8 @@ class SessionController {
         email,
         passwordResetToken
       );
-      res.send({ payload: user });
+      // res.send({ payload: user });
+      res.send({ payload: user, status: "success", redirectUrl: "/login" });
     } catch (error) {
       res.status(500).send({ status: "error", error: error.message });
     }

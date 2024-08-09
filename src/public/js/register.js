@@ -15,10 +15,10 @@ registerForm.addEventListener("submit", (event) => {
     .then((res) => res.json())
     .then((data) => {
       if (data.message == "User already exists") {
-        alert("¡Ups! Ese usuario ya existe.");
+        alert("User already exists, please go to Sign In.")
         return;
       } else {
-        alert("¡Tu usuario fue creado correctamente!");
+        alert("User created succesfully!");
         window.location.replace("/login");
         return;
       }
