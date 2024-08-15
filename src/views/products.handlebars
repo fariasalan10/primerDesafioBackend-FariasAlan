@@ -11,10 +11,9 @@
     />
     <link rel="stylesheet" href="/css/products.css" />
   </head>
-  <di>
+
     <nav
       class="navbar bg-dark navbar-expand-lg bg-body-tertiary"
-      data-bs-theme="dark"
     >
       <div class="container-fluid">
         <a class="navbar-brand" href="./">
@@ -35,30 +34,52 @@
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-
             <li class="nav-item">
               <a class="nav-link" href="./products">
                 Productos
               </a>
-
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/api/sessions/logout">Logout</a>
             </li>
-          </ul>
-
-         
+          </ul>    
         </div>
       </div>
     </nav>
 
-<div class="products-container" id="productos" >
+
+    <div class="container">
+      <header>
+        <div class="title">PRODUCT LIST</div>
+        <div class="icon-cart">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+          </svg>
+          <span>0</span>
+        </div>
+      </header>
+
+      <div class="listProduct">
+        {{#each products}}
+        <div class="item">
+          <img src="{{this.thumbnail}}" alt="{{this.thumbnail}}" >
+          <a href="api/products/{{this._id}}"><h2>{{this.title}}</h2></a>
+          <p class="card-text">{{this.description}}</p> 
+          <p class="card-text">Stock: {{this.stock}}</p>
+          <div class="price">${{this.price}}</div>
+          <button class="addCart" onclick="addToCart('{{../user.cart}}','{{this._id}}')">
+            Add To Cart
+          </button>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+{{!-- <div class="products-container" id="productos" >
 {{#each products}}
  <article class="container1">
         <div class="producto card1">
@@ -78,8 +99,6 @@
 
    {{/each}}
 </div>
-
-
 
    <section class="ocultar">
       <h1 id="ocultar__h1"> 
@@ -114,9 +133,9 @@
         </div>
       </div>
       <button class="botonCarrito" onclick="purchaseCart('{{user.cart}}')">Purchase Cart</button>
-    </section>
+    </section> --}}
 
-<div >
+{{!-- <div >
     {{#if hasPrevPage}}
         <a href="{{prevLink}}"><button >Prev</button></a>
     {{else}}
@@ -130,13 +149,13 @@
     {{else}}
         <button class='btnPageDisabled' disabled>Next</button>
     {{/if}}
-</div>
+</div> --}}
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+></script>
 <script src="/js/products.js"></script>
 
   </body>
