@@ -1,3 +1,7 @@
+const botonCarrito = document.querySelector(".icon-cart");
+const cartTab = document.querySelector(".cartTab");
+const closeCart = document.querySelector(".close");
+
 const addToCart = (cartId, productId) => {
   fetch(`/api/carts/${cartId}/product/${productId}`, {
     method: "POST",
@@ -29,7 +33,12 @@ const deleteFromCart = (cartId, productId) => {
   });
 };
 
-const botonCarrito = document.getElementById("ocultar__h1");
-botonCarrito.addEventListener("click", (event) => {
-  document.querySelector("section").classList.toggle("ocultar");
+botonCarrito.addEventListener("click", () => {
+  cartTab.classList.toggle("hiddenCart");
+  botonCarrito.classList.toggle("hiddenCart");
+});
+
+closeCart.addEventListener("click", (event) => {
+  cartTab.classList.toggle("hiddenCart");
+  botonCarrito.classList.toggle("hiddenCart");
 });
