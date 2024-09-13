@@ -11,6 +11,12 @@ body {
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
+
+  color: white;
+}
+
+.colorNavbar {
+  backdrop-filter: blur(20px);
 }
 
 .container {
@@ -19,6 +25,16 @@ body {
   margin: auto;
   text-align: center;
   padding-top: 15px;
+}
+
+@media (max-width: 892px) {
+  .container {
+    width: 90%;
+    max-width: 90vh;
+    margin: auto;
+    text-align: center;
+    padding-top: 15px;
+  }
 }
 
 svg {
@@ -64,6 +80,16 @@ header .icon-cart span {
   gap: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+@media (max-width: 892px) {
+  .listProduct {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 }
 
 .listProduct .item {
@@ -203,7 +229,7 @@ header .icon-cart span {
 }
 
 .listCart .remove a {
-  color: #000000;
+  color: blueviolet;
   font-size: 15px;
   cursor: pointer;
   text-decoration: none;
