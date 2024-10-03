@@ -19,7 +19,19 @@ class CartsController {
     try {
       const id = req.params.id;
       const cart = await cartsService.getById(id);
-      res.send(cart);
+      const total = await cartsService.calculateQuantityByPrice(id);
+      res.send({ products: cart.products, total });
+    } catch (error) {
+      console.error("Error al obtener carrito:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+
+  static async calculateQuantityByPrice(req, res) {
+    try {
+      const id = req.params.id;
+      const quantityByPrice = await cartsService.calculateQuantityByPrice(id);
+      res.send(quantityByPrice);
     } catch (error) {
       console.error("Error al obtener carrito:", error);
       res.status(500).json({ error: "Internal Server Error" });

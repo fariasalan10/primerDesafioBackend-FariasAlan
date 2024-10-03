@@ -51,12 +51,14 @@ class ViewsController {
       const { docs, ...rest } = await productsService.getAll(req.query);
 
       const cart = await cartsService.getById(req.user.cart);
+      const total = await cartsService.calculateQuantityByPrice(req.user.cart);
 
       res.render("products", {
         user: req.session.user,
         products: docs,
         style: "/css/products.css",
         cart,
+        total,
         ...rest,
       });
     } catch (error) {
@@ -69,6 +71,7 @@ class ViewsController {
   static async getProductById(req, res) {
     try {
       const product = await productsService.getById(req.params.pid);
+
       res.render("products", { product, style: "../public/css/products.css" });
     } catch (error) {
       res
@@ -85,7 +88,12 @@ class ViewsController {
           product: product.product.toObject(),
           quantity: product.quantity,
         }));
-        res.render("cart", { products: productsInCart });
+
+        const total = await cartsService.calculateQuantityByPrice(
+          req.params.id
+        );
+        console.log(total);
+        res.render("cart", { products: productsInCart, total });
       }
       throw new CustomError({
         name: "Cart not found",

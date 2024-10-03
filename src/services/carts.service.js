@@ -56,12 +56,23 @@ class CartsService {
   async deleteProductById(cartId, productId) {
     const cart = await this.getById(cartId);
     await this.productService.getById(productId);
-
-    const newContent = cart.products.filter(
-      (p) => p.product._id.toString() != productId
+    //restamos 1 a la cantidad del producto en el carrito
+    const index = cart.products.findIndex(
+      (i) => i.product._id.toString() == productId
     );
-    await this.update(cartId, { products: newContent });
-    return this.getById(cartId);
+
+    if (index < 0) {
+      throw new Error("Product not found in cart");
+    }
+
+    cart.products[index].quantity -= 1;
+
+    if (cart.products[index].quantity <= 0) {
+      cart.products.splice(index, 1);
+    }
+
+    await this.update(cartId, cart);
+    return cart;
   }
 
   async updateCartProducts(cartId, content) {
@@ -88,6 +99,16 @@ class CartsService {
 
     await this.update(cartId, cart);
     return this.getById(cartId);
+  }
+
+  async calculateQuantityByPrice(cartId) {
+    const cart = await this.getById(cartId);
+    let total = 0;
+    cart.products.forEach((p) => {
+      total += p.product.price * p.quantity;
+    });
+    await this.update(cartId, { total: total });
+    return total;
   }
 
   async deleteAllProducts(cartId) {

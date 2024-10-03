@@ -13,6 +13,8 @@ router.post(
   CartsController.addProduct
 );
 
+router.get("/:id/product/:pid", CartsController.calculateQuantityByPrice);
+
 router.delete("/:id/product/:pid", CartsController.deleteProduct);
 
 router.put("/:id", CartsController.update);

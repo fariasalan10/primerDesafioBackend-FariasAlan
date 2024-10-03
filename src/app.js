@@ -5,6 +5,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const initializePassport = require("./config/passport.config");
+const cors = require("cors");
 
 const ProductManager = require("./dao/dbManagers/productManager");
 const pm = new ProductManager("./src/files/products.json");
@@ -16,6 +17,7 @@ const sessionRouter = require("./routes/sessions.router");
 const { usersRouter } = require("./routes/users.router");
 const { mockRouter } = require("./routes/mock.router");
 const { loggerTestRouter } = require("./routes/loggerTest.router");
+const { paymentsRouter } = require("./routes/payments.router");
 
 const messageModel = require("./dao/models/messages");
 const { mongoConnectionLink, port, sessionSecret } = require("./config/config");
@@ -25,6 +27,9 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUiExpress = require("swagger-ui-express");
 
 const server = express();
+
+//Cors
+server.use(cors());
 
 //Handlebars
 server.engine("handlebars", handlebars.engine());
@@ -80,6 +85,7 @@ server.use("/api/sessions", sessionRouter);
 server.use("/api/mock", mockRouter);
 server.use("/api/logger", loggerTestRouter);
 server.use("/api/users", usersRouter);
+server.use("/api/payments", paymentsRouter);
 
 const serverHttp = server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
